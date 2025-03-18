@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask The Documents</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #debug-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .debug-entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .debug-button {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .debug-button:hover {
+            background-color: #e0e0e0;
+        }
+        .clear-button {
+            background-color: #ffeeee;
+            border: 1px solid #ffcccc;
+            color: #cc0000;
+            margin-left: 5px;
+        }
+        body.debug-open {
+            padding-top: 160px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Debug panel (hidden by default) -->
+    <div id="debug-container" class="hidden"></div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Ask the documents
+            </div>
+            <div class="divider"></div>
+            <div class="card-body">
+                <form id="query-form">
+                    <div class="input-container">
+                        <div class="search-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 22L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <input 
+                            type="search" 
+                            id="query-input" 
+                            placeholder="Type your question..." 
+                            class="input"
+                        >
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="login-message" class="mt-4 hidden">
+            <div class="card">
+                <div class="card-body">
+                    <p>Para usar esta extensión, primero debes iniciar sesión en la aplicación.</p>
+                    <p><a href="#" id="login-link" target="_blank">Haz clic aquí para abrir la aplicación e iniciar sesión</a></p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="answer-container" class="mt-4 hidden">
+            <div class="card">
+                <div class="card-body">
+                    <div id="answer-content" class="markdown"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading-container" class="mt-4 hidden">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <button id="toggle-debug" class="debug-button">Mostrar Debug</button>
+            <button id="clear-debug" class="debug-button clear-button">Limpiar Logs</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-import { type Document } from "wasp/entities";
-
+import { type Document, type Section } from "wasp/entities";
+import { DocumentWithScore } from "./types";
 import {
   type EmbedDocument,
   type SearchDocuments,
@@ -19,6 +19,9 @@ const api = new openai.OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
 
+// Aproximadamente 8000 tokens son unos 6000 caracteres
+const MAX_CHUNK_SIZE = 6000;
+
 type EmbedDocumentInput = {
   url: string;
   selector?: string;
@@ -26,6 +29,45 @@ type EmbedDocumentInput = {
 type EmbedDocumentOutput = {
   success: boolean;
 };
+
+function splitIntoChunks(text: string, maxChunkSize: number): string[] {
+  const chunks: string[] = [];
+  let currentChunk = "";
+  
+  // Dividir por párrafos para mantener el contexto
+  const paragraphs = text.split(/\n\n+/);
+  
+  for (const paragraph of paragraphs) {
+    if (currentChunk.length + paragraph.length + 2 <= maxChunkSize) {
+      currentChunk += (currentChunk ? "\n\n" : "") + paragraph;
+    } else {
+      if (currentChunk) {
+        chunks.push(currentChunk);
+      }
+      // Si un párrafo es más largo que maxChunkSize, lo dividimos
+      if (paragraph.length > maxChunkSize) {
+        const words = paragraph.split(" ");
+        currentChunk = "";
+        for (const word of words) {
+          if (currentChunk.length + word.length + 1 <= maxChunkSize) {
+            currentChunk += (currentChunk ? " " : "") + word;
+          } else {
+            chunks.push(currentChunk);
+            currentChunk = word;
+          }
+        }
+      } else {
+        currentChunk = paragraph;
+      }
+    }
+  }
+  
+  if (currentChunk) {
+    chunks.push(currentChunk);
+  }
+  
+  return chunks;
+}
 
 export const embedDocument: EmbedDocument<
   EmbedDocumentInput,
@@ -36,16 +78,46 @@ export const embedDocument: EmbedDocument<
   }
   const { url, selector } = args;
 
+  console.log(`[Scraping] Starting to scrape URL: ${url}${selector ? `, with selector: ${selector}` : ''}`);
+
   // Scrape url to get the title and content
   const { title, markdownContent } = await getContent(url, selector);
+  
+  console.log(`[Scraping] Results:
+    Title: ${title}
+    Content length: ${markdownContent?.length || 0} chars
+    Content preview: ${markdownContent?.substring(0, 200)}...`);
 
-  const embedding = toSql(await createEmbedding(markdownContent));
+  if (!markdownContent || markdownContent.length === 0) {
+    console.error('[Scraping] Error: No content was retrieved');
+    throw new HttpError(400, "No content could be retrieved from the URL");
+  }
 
-  await prisma.$queryRaw`
-    INSERT INTO "Document" ("id", "title", "content", "embedding", "url", "updatedAt")
-    VALUES (gen_random_uuid(), ${title}, ${markdownContent}, ${embedding}::vector, ${url}, ${new Date()})
-    RETURNING "id";
-  `;
+  // Dividir el contenido en chunks si es muy largo
+  const chunks = splitIntoChunks(markdownContent, MAX_CHUNK_SIZE);
+  console.log(`[Scraping] Content split into ${chunks.length} chunks`);
+
+  // Primero creamos el documento principal
+  const document = await prisma.document.create({
+    data: {
+      title,
+      url,
+    }
+  });
+
+  // Luego creamos cada sección usando prisma.$executeRaw
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    console.log(`[Scraping] Processing chunk ${i + 1}/${chunks.length}, length: ${chunk.length} chars`);
+    
+    const embedding = toSql(await createEmbedding(chunk));
+
+    await prisma.$executeRaw`
+      INSERT INTO "Section" ("id", "content", "embedding", "orderIndex", "documentId")
+      VALUES (gen_random_uuid(), ${chunk}, ${embedding}::vector, ${i}, ${document.id});
+    `;
+    console.log(`[Scraping] Successfully saved section ${i + 1} to database`);
+  }
 
   return { success: true };
 };
@@ -57,16 +129,22 @@ export const getDocuments: GetDocuments<
   GetDocumentsInput,
   GetDocumentsOutput
 > = async (_args, context) => {
-  return context.entities.Document.findMany();
+  const documents = await context.entities.Document.findMany({
+    include: {
+      sections: {
+        orderBy: {
+          orderIndex: 'asc'
+        }
+      }
+    }
+  });
+  return documents;
 };
 
 type SearchDocumentsInput = {
   query: string;
 };
-type SearchDocumentsOutput = {
-  document: Document;
-  score: number;
-}[];
+type SearchDocumentsOutput = DocumentWithScore[];
 
 export const searchDocuments: SearchDocuments<
   SearchDocumentsInput,
@@ -79,31 +157,60 @@ export const searchDocuments: SearchDocuments<
 
   const embedding = toSql(await createEmbedding(query));
 
+  // Buscar en las secciones y agrupar por documento
   const result = (await prisma.$queryRaw`
-    SELECT "id", "title", "content", "embedding" <-> ${embedding}::vector AS "score", "createdAt", "updatedAt", "url"
-    FROM "Document"
-    ORDER BY "embedding" <-> ${embedding}::vector
-    LIMIT 10;
+    WITH RankedSections AS (
+      SELECT 
+        s."documentId",
+        MIN(s.embedding <-> ${embedding}::vector) as best_score
+      FROM "Section" s
+      GROUP BY s."documentId"
+      ORDER BY best_score
+      LIMIT 10
+    )
+    SELECT 
+      d.id,
+      d.title,
+      d.url,
+      d."createdAt",
+      d."updatedAt",
+      rs.best_score as score,
+      json_agg(json_build_object(
+        'id', s.id,
+        'content', s.content,
+        'orderIndex', s."orderIndex",
+        'documentId', s."documentId"
+      ) ORDER BY s."orderIndex") as sections
+    FROM RankedSections rs
+    JOIN "Document" d ON d.id = rs."documentId"
+    JOIN "Section" s ON s."documentId" = d.id
+    GROUP BY d.id, d.title, d.url, d."createdAt", d."updatedAt", rs.best_score
+    ORDER BY rs.best_score;
   `) as {
     id: string;
     title: string;
-    content: string;
-    score: number;
+    url: string;
     createdAt: Date;
     updatedAt: Date;
-    url: string;
+    score: number;
+    sections: {
+      id: string;
+      content: string;
+      orderIndex: number;
+      documentId: string;
+    }[];
   }[];
 
-  return result.map((result) => ({
+  return result.map((doc): DocumentWithScore => ({
     document: {
-      id: result.id,
-      title: result.title,
-      content: result.content,
-      url: result.url,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
+      id: doc.id,
+      title: doc.title,
+      url: doc.url,
+      createdAt: doc.createdAt,
+      updatedAt: doc.updatedAt,
+      sections: doc.sections
     },
-    score: result.score,
+    score: doc.score,
   }));
 };
 
@@ -145,11 +252,12 @@ export const askDocuments: AskDocuments<
   const queryEmbedding = await createEmbedding(query);
 
   const result = (await prisma.$queryRaw`
-    SELECT "content", "embedding" <-> ${toSql(
+    SELECT s."content", s."embedding" <-> ${toSql(
       queryEmbedding
-    )}::vector AS "score", "url"
-    FROM "Document"
-    ORDER BY "embedding" <-> ${toSql(queryEmbedding)}::vector
+    )}::vector AS "score", d."url"
+    FROM "Section" s
+    JOIN "Document" d ON s."documentId" = d."id"
+    ORDER BY s."embedding" <-> ${toSql(queryEmbedding)}::vector
     LIMIT 2;
   `) as {
     content: string;
@@ -185,7 +293,7 @@ export const askDocuments: AskDocuments<
   return { answer: content };
 };
 
-async function createEmbedding(text: string): Promise<number[]> {
+export async function createEmbedding(text: string): Promise<number[]> {
   const apiResult = await api.embeddings.create({
     model: "text-embedding-ada-002",
     input: text,

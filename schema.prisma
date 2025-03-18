@@ -15,11 +15,21 @@ model User {
 }
 
 model Document {
-  id        String                      @id @default(uuid())
-  title     String
-  url       String                      @unique
-  content   String
-  embedding Unsupported("vector(1536)")
-  createdAt DateTime                    @default(now())
-  updatedAt DateTime                    @updatedAt
+  id          String        @id @default(uuid())
+  title       String
+  url         String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  sections    Section[]
+}
+
+model Section {
+  id          String    @id @default(uuid())
+  content     String
+  embedding   Unsupported("vector(1536)")
+  orderIndex  Int       // Para mantener el orden de las secciones
+  document    Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId  String
+  
+  @@unique([documentId, orderIndex])
 }

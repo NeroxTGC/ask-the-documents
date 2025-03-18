@@ -1,4 +1,4 @@
-import { searchDocuments } from "wasp/client/operations";
+import { searchDocuments, askDocuments } from "wasp/client/operations";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
@@ -11,24 +11,31 @@ import {
   Input,
   CardFooter,
   ScrollShadow,
+  Button,
+  Spinner,
 } from "@nextui-org/react";
 import { SearchIcon } from "../SearchIcon";
 import { LinkIcon } from "../LinkIcons";
 import { DocumentCard } from "../DocumentCard";
+import { Document } from "../../types";
 
 export function SearchForm() {
+  const [query, setQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<{ document: Document; score: number }[]>([]);
+  const [isAsking, setIsAsking] = useState(false);
+  const [answer, setAnswer] = useState("");
   const searchForm = useForm<{
     query: string;
   }>();
-  const [results, setResults] = useState<Awaited<
-    ReturnType<typeof searchDocuments>
-  > | null>(null);
   const onSearch = searchForm.handleSubmit(async (data) => {
+    setIsSearching(true);
     const response = await searchDocuments(data);
-    setResults(response);
+    setSearchResults(response);
+    setIsSearching(false);
   });
   return (
-    <>
+    <div>
       <Card>
         <CardHeader>Search documents</CardHeader>
         <Divider />
@@ -41,13 +48,16 @@ export function SearchForm() {
               type="search"
               variant="bordered"
             />
+            <Button type="submit" disabled={isSearching}>
+              {isSearching ? <Spinner size="sm" /> : "Search"}
+            </Button>
           </form>
         </CardBody>
       </Card>
 
-      {results && (
+      {searchResults && (
         <div className="mt-4">
-          {results.map((result) => (
+          {searchResults.map((result) => (
             <DocumentCard
               key={result.document.id}
               document={result.document}
@@ -56,6 +66,6 @@ export function SearchForm() {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

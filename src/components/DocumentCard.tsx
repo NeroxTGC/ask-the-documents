@@ -11,8 +11,7 @@ import {
 
 import ReactMarkdown from "react-markdown";
 import { LinkIcon } from "./LinkIcons";
-
-type Document = Awaited<ReturnType<typeof searchDocuments>>[number]["document"];
+import { Document } from "../types";
 
 export function DocumentCard({
   document,
@@ -23,6 +22,8 @@ export function DocumentCard({
   onDelete?: () => void;
   footerContent?: React.ReactNode;
 }) {
+  const content = document.sections?.map(s => s.content).join('\n\n') || '';
+
   return (
     <Card className="mt-2" key={document.id}>
       <CardHeader className="flex justify-between items-center">
@@ -49,7 +50,7 @@ export function DocumentCard({
       <Divider />
       <CardBody>
         <ScrollShadow className="max-h-[200px]">
-          <ReactMarkdown className="markdown">{document.content}</ReactMarkdown>
+          <ReactMarkdown className="markdown">{content}</ReactMarkdown>
         </ScrollShadow>
       </CardBody>
       {footerContent && (

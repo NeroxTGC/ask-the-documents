@@ -1,6 +1,6 @@
 app askTheDocuments {
   wasp: {
-    version: "^0.16.0"
+    version: "^0.16.2"
   },
   title: "PG Vector Example",
   auth: {
@@ -28,30 +28,44 @@ page MainPage {
 
 action embedDocument {
   fn: import { embedDocument } from "@src/documents.js",
-  entities: [Document],
+  entities: [Document, Section],
 }
 
 action getScrapeCandidates {
   fn: import { getScrapeCandidates } from "@src/documents.js",
-  entities: [Document],
+  entities: [Document, Section],
 }
 
 query getDocuments {
   fn: import { getDocuments } from "@src/documents.js",
-  entities: [Document]
+  entities: [Document, Section]
 }
 
 action searchDocuments {
   fn: import { searchDocuments } from "@src/documents.js",
-  entities: [Document]
+  entities: [Document, Section]
 }
 
 action askDocuments {
   fn: import { askDocuments } from "@src/documents.js",
-  entities: [Document]
+  entities: [Document, Section]
 }
 
 action deleteDocument {
   fn: import { deleteDocument } from "@src/documents.js",
-  entities: [Document]
+  entities: [Document, Section]
+}
+
+// API for Chrome extension
+api askDocumentsApi {
+  fn: import { askDocumentsApi } from "@src/apis.js",
+  entities: [Document, Section],
+  httpRoute: (POST, "/api/ask"),
+  auth: true
+}
+
+// CORS middleware for the API
+apiNamespace apiNamespace {
+  middlewareConfigFn: import { apiMiddleware } from "@src/apis.js",
+  path: "/api"
 }
