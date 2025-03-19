@@ -1,0 +1,113 @@
+{
+  "hey__i_m_your_ai_assistant_": {
+    "message": "你好，我是你的 AI 助手！"
+  },
+  "what_can_i_help_with_": {
+    "message": "我能帮你什么？"
+  },
+  "feedback": {
+    "message": "反馈"
+  },
+  "share": {
+    "message": "分享"
+  },
+  "rate_us": {
+    "message": "评价我们"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "chat_history": {
+    "message": "聊天记录"
+  },
+  "set_personalization": {
+    "message": "设置个性化"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "添加个人信息或指令到 AI 助手，这将帮助提高回复质量。"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "share_us_with_your_friends": {
+    "message": "与朋友分享我们"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "并解锁所有 AI 助手功能"
+  },
+  "copy_link": {
+    "message": "复制链接"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "微博"
+  },
+  "post_preview": {
+    "message": "帖子预览"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "敬请期待 – 即将推出！"
+  },
+  "love_deepseek_": {
+    "message": "喜欢 DeepSeek 吗？"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "能否请您评价我们的扩展程序？"
+  },
+  "did_this_tool_help_you_": {
+    "message": "这个工具对您有帮助吗？"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "与朋友分享这个扩展程序"
+  },
+  "who_would_find_it_useful_": {
+    "message": "谁会觉得它有用？"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "并解锁所有 AI 助手功能"
+  },
+  "help_us_be_better": {
+    "message": "帮助我们变得更好"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "您的反馈很重要。我们可以改进什么？"
+  },
+  "send": {
+    "message": "发送"
+  },
+  "message_deepseek": {
+    "message": "消息 DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "例如，总是用法语回复"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "在新标签页中打开扩展程序"
+  },
+  "new_chat": {
+    "message": "新聊天"
+  },
+  "start_a_chat": {
+    "message": "开始聊天"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>您可以使用 AI 助手，例如：</p><ul><li>检查并纠正英语中的错误</li><li>提供商业领域的咨询</li></ul><p>或者输入您的信息以生成个性化的回复，例如：</p><ul><li>23 岁，58 公斤，身高 165 厘米，女性</li><li>程序员。PHP – Laravel，JS – React。</li></ul>"
+  }
+}

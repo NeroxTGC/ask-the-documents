@@ -12,6 +12,7 @@ generator client {
 model User {
   id    Int     @id @default(autoincrement())
   email String?
+  chats Chat[]  // Relación con los chats
 }
 
 model Document {
@@ -32,4 +33,27 @@ model Section {
   documentId  String
   
   @@unique([documentId, orderIndex])
+}
+
+model Chat {
+  id          String    @id @default(uuid())
+  title       String    // Título o resumen del chat
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int       // Chat pertenece a un usuario
+  messages    Message[] // Relación con mensajes
+}
+
+model Message {
+  id          String    @id @default(uuid())
+  content     String    // Contenido del mensaje
+  role        String    // "user", "assistant", "system"
+  modelType   String    // "rag", "deepseek"
+  embedding   Unsupported("vector(1536)")? // Embedding opcional para funcionalidad RAG
+  createdAt   DateTime  @default(now())
+  chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId      String    // Mensaje pertenece a un chat
+  
+  @@index([chatId]) // Índice para mejorar rendimiento
 }

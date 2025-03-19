@@ -1,0 +1,122 @@
+{
+  "appName": {
+    "message": "DeepSeek AI"
+  },
+  "shortDesc": {
+    "message": "Mit DeepSeek AI Assistant können Sie das DeepSeek-Modell ausprobieren, um schnelle Antworten und kreative Ideen zu erhalten"
+  },
+  "storeDesc": {
+    "message": "🎉 Entdecken Sie die Fähigkeiten der nächsten Generation mit DeepSeek AI\nEgal, ob Sie ein erfahrener Entwickler sind oder gerade die KI-App DeepSeek entdecken, diese Erweiterung hilft Ihnen, sich mühelos an moderne Aufgaben anzupassen. Durch die Nutzung des DeepSeek KI-Bots werden Sie erleben, wie Spitzentechnologie die Produktivität neu gestalten kann.\n\n🌟 Warum DeepSeek KI wählen?\n➤ Beseitigt redundante Schritte: Verlassen Sie sich auf das DeepSeek KI-Modell für schnelle Dateninterpretation.\n➤ Intuitive Interaktionen: Chatten Sie natürlich mit einem DeepSeek-Assistenten, der den Kontext versteht.\n➤ Globale Reichweite: Selbst in einer chinesischen KI-Umgebung passt es die Antworten an lokale Nuancen an.\n\n🎉 Entdecken Sie die Fähigkeiten der nächsten Generation mit neuer künstlicher Intelligenz\nEgal, ob Sie ein erfahrener Entwickler sind oder gerade die KI-App Deep Seek entdecken, diese Erweiterung hilft Ihnen, sich mühelos an moderne Aufgaben anzupassen. Durch die Nutzung der KI DeepSeek werden Sie erleben, wie Spitzentechnologie die Produktivität neu gestalten kann.\n\n🎨 Kernkomponenten von Deep Seek\n💠 KI-Tool DeepSeek: Genießen Sie ein benutzerfreundliches Panel, das auf Abruf schnelle Einblicke liefert.\n💠 Künstlicher Intelligenz-Assistent: Kommunizieren Sie mit einem zuverlässigen System, das Anfragen genau interpretiert.\n💠 DeepSeek v3: Greifen Sie auf die neueste Iteration zu, vollgepackt mit verfeinerter Logik und erweiterten Funktionen.\n💠 China DeepSeek: Bedienen Sie eine breite demografische Gruppe, indem Sie regionale Sprachunterstützung integrieren.\n\n💡 Unvergleichliche Effizienz\nNutzen Sie den DeepSeek-Chat für Echtzeitgespräche und ziehen Sie relevante Daten aus verstreuten Dateien in Sekundenschnelle. Wenn Ihr Fokus auf fortgeschrittenem Modellieren liegt, passt sich das Deep Seek-Modell intuitiv an Ihre Eingaben an.\n\n🎉 Innovation inspirieren\nEgal, ob Sie neue Ideen prototypisieren oder bestehende Konzepte verfeinern, der Bot ebnet den Weg für tiefere Einblicke. Schnelle Feedback-Schleifen verkürzen die Iterationszeit, sodass Sie sich auf das konzentrieren können, was wirklich zählt – außergewöhnliche Ergebnisse zu schaffen.\n\n📚 Ideale Anwendungsfälle\n1️⃣ DeepSeek-Coder: Bearbeiten Sie Programmieranfragen, von Fehlerbehebungen bis zur Snippet-Generierung.\n2️⃣ DeepSeek online: Bleiben Sie mit Ressourcen in der Cloud synchron für unterwegs.\n3️⃣ DeepSeek-App: Integrieren Sie es in alltägliche Aufgaben und sorgen Sie für nahtlose Übergänge über Geräte hinweg.\n4️⃣ DeepSeek-Tool: Vereinfachen Sie Ihre Routine, indem Sie wiederkehrende Prozesse an robuste Automatisierung auslagern.\n\n🚀 Treten Sie in die Zukunft mit Deep Seek.\nWährend sich die Technologie weiterentwickelt, halten Sie Ihren Arbeitsablauf an der Spitze. Durch die Nutzung des Tools positionieren Sie sich für den Erfolg in einer von Innovation dominierten Ära. Lassen Sie den Deep Seek-Coder Ihre Code-Anforderungen bearbeiten und den DeepSeek-Chatbot Ihre alltäglichen Anfragen optimieren.\n\n⚡ Produktivität steigern mit Deep Seek\n💎 Sofortige Lösung: Arbeiten Sie schneller, indem Sie die Datenanalyse an den Deep Seek KI-Bot delegieren.\n💎 Adaptiver Motor: Im Laufe der Zeit verfeinert die KI ihre Antworten, um Ihrem persönlichen Stil zu entsprechen.\n💎 Plattformübergreifende Synergie: Verlassen Sie sich auf die Integration von Deep Seek v3 über Browser und Geräte hinweg.\n💎 Vereinfachtes Management: Kombinieren Sie Gesprächsprotokolle und Codevorschläge an einem Ort.\n\n💼 Beruflicher und persönlicher Nutzen\nDie Erweiterung deckt ein breites Spektrum an Aufgaben ab – von einfachen Anfragen bis hin zu umfangreichen Recherchen. Mit dem Chatbot können Sie schnelle Fakten sammeln oder gründliche Untersuchungen durchführen. In der Zwischenzeit kann das DeepSeek KI-Modell Codegenerierung oder -optimierung übernehmen und die Last für vielbeschäftigte Entwickler erleichtern.\n\n🚀 Kontinuierliche Weiterentwicklung\nDeep Seek hält mit neuen Durchbrüchen Schritt und veröffentlicht inkrementelle Upgrades, die die Leistung verbessern. Durch die Nutzung der Erweiterung genießen Sie kontinuierlichen Fortschritt im Einklang mit den neuesten Industriestandards. Im Laufe der Zeit übersetzen sich diese Verbesserungen in noch effizientere Arbeitsabläufe.\n\n🧩 Genießen Sie Synergie, während die künstliche Intelligenz rohes Brainstorming in umsetzbare Strategien verwandelt."
+  },
+  "hey__i_m_your_ai_assistant_": {
+    "message": "Hallo, ich bin Ihr AI-Assistent!"
+  },
+  "what_can_i_help_with_": {
+    "message": "Womit kann ich helfen?"
+  },
+  "feedback": {
+    "message": "Feedback"
+  },
+  "share": {
+    "message": "Teilen"
+  },
+  "rate_us": {
+    "message": "Rate us"
+  },
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "chat_history": {
+    "message": "Chatverlauf"
+  },
+  "set_personalization": {
+    "message": "Personalisierung einstellen"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "Fügen Sie persönliche Informationen oder Anweisungen für den AI-Assistenten hinzu. Dies wird die Antworten für Sie verbessern."
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "share_us_with_your_friends": {
+    "message": "Teilen Sie uns mit Ihren Freunden"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "Und Sie schalten alle Funktionen des AI-Assistenten frei"
+  },
+  "copy_link": {
+    "message": "Link kopieren"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "Weibo"
+  },
+  "post_preview": {
+    "message": "Beitragsvorschau"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "Bleiben Sie dran – bald verfügbar!"
+  },
+  "love_deepseek_": {
+    "message": "Lieben Sie DeepSeek?"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "Könnten Sie bitte unsere Erweiterung bewerten?"
+  },
+  "did_this_tool_help_you_": {
+    "message": "Hat Ihnen dieses Tool geholfen?"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "Teilen Sie diese Erweiterung mit Ihren Freunden"
+  },
+  "who_would_find_it_useful_": {
+    "message": "Wer könnte es nützlich finden?"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "Und schalten Sie alle Funktionen des AI-Assistenten frei"
+  },
+  "help_us_be_better": {
+    "message": "Helfen Sie uns, besser zu werden"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "Ihr Feedback ist wichtig. Was können wir verbessern?"
+  },
+  "send": {
+    "message": "Senden"
+  },
+  "message_deepseek": {
+    "message": "Nachricht an DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "z. B. immer auf Französisch antworten"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "Erweiterung in einem neuen Tab öffnen"
+  },
+  "new_chat": {
+    "message": "Neuer Chat"
+  },
+  "start_a_chat": {
+    "message": "Chat starten"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>Sie können den AI Assistant nutzen, zum Beispiel:</p><ul><li>Um Fehler in der englischen Sprache zu überprüfen und zu korrigieren</li><li>Für Beratung im Bereich Business</li></ul><p>Oder geben Sie Ihre Daten ein, um personalisierte Antworten zu erhalten, zum Beispiel:</p><ul><li>23 Jahre alt, 58 kg, Größe 165 cm, weiblich</li><li>Programmierer. PHP – Laravel, JS – React.</li></ul>"
+  }
+}

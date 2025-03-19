@@ -1,0 +1,113 @@
+{
+  "hey__i_m_your_ai_assistant_": {
+    "message": "Hallo, ich bin Ihr AI-Assistent!"
+  },
+  "what_can_i_help_with_": {
+    "message": "Womit kann ich helfen?"
+  },
+  "feedback": {
+    "message": "Feedback"
+  },
+  "share": {
+    "message": "Teilen"
+  },
+  "rate_us": {
+    "message": "Rate us"
+  },
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "chat_history": {
+    "message": "Chatverlauf"
+  },
+  "set_personalization": {
+    "message": "Personalisierung einstellen"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "Fügen Sie persönliche Informationen oder Anweisungen für den AI-Assistenten hinzu. Dies wird die Antworten für Sie verbessern."
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "share_us_with_your_friends": {
+    "message": "Teilen Sie uns mit Ihren Freunden"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "Und Sie schalten alle Funktionen des AI-Assistenten frei"
+  },
+  "copy_link": {
+    "message": "Link kopieren"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "Weibo"
+  },
+  "post_preview": {
+    "message": "Beitragsvorschau"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "Bleiben Sie dran – bald verfügbar!"
+  },
+  "love_deepseek_": {
+    "message": "Lieben Sie DeepSeek?"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "Könnten Sie bitte unsere Erweiterung bewerten?"
+  },
+  "did_this_tool_help_you_": {
+    "message": "Hat Ihnen dieses Tool geholfen?"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "Teilen Sie diese Erweiterung mit Ihren Freunden"
+  },
+  "who_would_find_it_useful_": {
+    "message": "Wer könnte es nützlich finden?"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "Und schalten Sie alle Funktionen des AI-Assistenten frei"
+  },
+  "help_us_be_better": {
+    "message": "Helfen Sie uns, besser zu werden"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "Ihr Feedback ist wichtig. Was können wir verbessern?"
+  },
+  "send": {
+    "message": "Senden"
+  },
+  "message_deepseek": {
+    "message": "Nachricht an DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "z. B. immer auf Französisch antworten"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "Erweiterung in einem neuen Tab öffnen"
+  },
+  "new_chat": {
+    "message": "Neuer Chat"
+  },
+  "start_a_chat": {
+    "message": "Chat starten"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>Sie können den AI Assistant nutzen, zum Beispiel:</p><ul><li>Um Fehler in der englischen Sprache zu überprüfen und zu korrigieren</li><li>Für Beratung im Bereich Business</li></ul><p>Oder geben Sie Ihre Daten ein, um personalisierte Antworten zu erhalten, zum Beispiel:</p><ul><li>23 Jahre alt, 58 kg, Größe 165 cm, weiblich</li><li>Programmierer. PHP – Laravel, JS – React.</li></ul>"
+  }
+}

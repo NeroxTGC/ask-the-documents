@@ -1,0 +1,113 @@
+{
+   "hey__i_m_your_ai_assistant_": {
+    "message": "Привет, я твой AI-ассистент!"
+  },
+  "what_can_i_help_with_": {
+    "message": "Чем сегодня я могу тебе помочь?"
+  },
+  "feedback": {
+    "message": "Связь"
+  },
+  "share": {
+    "message": "Поделиться"
+  },
+  "rate_us": {
+    "message": "Оценка"
+  },
+  "settings": {
+    "message": "Настройки"
+  },
+  "chat_history": {
+    "message": "История чатов"
+  },
+  "set_personalization": {
+    "message": "Настроить персонализацию"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "Добавьте личную информацию или инструкции для AI-ассистент. Это поможет ему сделать ответы лучше для вас."
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "share_us_with_your_friends": {
+    "message": "Расскажите о нас друзьям"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "И вам откроется доступ ко всем функциям AI-ассистента"
+  },
+  "copy_link": {
+    "message": "Ссылка"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "Weibo"
+  },
+  "post_preview": {
+    "message": "Предпросмотр"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "Следите за новостями – скоро будет доступно!"
+  },
+  "love_deepseek_": {
+    "message": "Нравится DeepSeek?"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "Можете оценить наше расширение?"
+  },
+  "did_this_tool_help_you_": {
+    "message": "Этот инструмент вам помог?"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "Поделитесь этим расширением с друзьями"
+  },
+  "who_would_find_it_useful_": {
+    "message": "Кому это может быть полезно?"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "И вам откроется доступ ко всем функциям AI-ассистента"
+  },
+  "help_us_be_better": {
+    "message": "Помогите нам стать лучше"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "Что мы можем улучшить? Нам важно ваше мнение"
+  },
+  "send": {
+    "message": "Отправить"
+  },
+  "message_deepseek": {
+    "message": "Сообщение DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "например, всегда отвечать на французском"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "Открыть расширение в отдельной вкладке"
+  },
+  "new_chat": {
+    "message": "Новый чат"
+  },
+  "start_a_chat": {
+    "message": "Начать чат"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>Вы можете попросить AI-ассистента играть определенную роль, например:</p><ul><li>Отвечай как учитель английского языка и поправляй мои ошибки</li><li>Отвечай как профессиональный бизнес консультант</li></ul><p>Или ввести свои данные, чтобы AI-ассистент учитывал их в своих ответах, например:</p><ul><li>23 года, 58 кг, рост 165 см, женщина</li><li>Программист. PHP – Laravel, JS – React.</li></ul>"
+  }
+}

@@ -1,46 +1,25 @@
-import {
-  logout,
-  useAuth,
-  googleSignInUrl as signInUrl,
-} from "wasp/client/auth";
-import {
-  NextUIProvider,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
+import { NextUIProvider } from "@nextui-org/react";
 import "./Main.css";
+import { useAuth, googleSignInUrl as signInUrl } from 'wasp/client/auth';
 
 export function Layout() {
-  const { data: user } = useAuth();
+  const { data: user, isLoading } = useAuth();
+  const location = useLocation();
 
-  const loginButton = (
-    <Button as={Link} color="primary" href={signInUrl} variant="flat">
-      Login with Google
-    </Button>
-  );
+  // Verificar si la ruta actual es una ruta de chat
+  const isChatRoute = location.pathname.startsWith('/chat');
 
-  const logoutButton = (
-    <Button color="danger" variant="flat" onClick={logout}>
-      Logout
-    </Button>
-  );
+  // Si es una ruta de chat y el usuario no está autenticado, redirigir al login de Google
+  if (isChatRoute && !isLoading && !user) {
+    // Redirigir a la URL de autenticación de Google
+    window.location.href = signInUrl;
+    return null; // Evitar renderizar mientras se redirige
+  }
 
   return (
     <NextUIProvider>
       <div className="dark text-foreground bg-background min-h-screen">
-        <Navbar>
-          <NavbarBrand>
-            <p className="font-bold text-inherit">Ask The Documents</p>
-          </NavbarBrand>
-          <NavbarContent justify="end">
-            <NavbarItem>{user ? logoutButton : loginButton}</NavbarItem>
-          </NavbarContent>
-        </Navbar>
         <Outlet />
       </div>
     </NextUIProvider>

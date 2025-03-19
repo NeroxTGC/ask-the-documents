@@ -11,7 +11,8 @@ app askTheDocuments {
         configFn: import { getConfig } from "@src/auth/google.js",
       }
     },
-    onAuthFailedRedirectTo: "/"
+    onAuthFailedRedirectTo: "/",
+    onAuthSucceededRedirectTo: "/chat",
   },
   client: {
     rootComponent: import { Layout } from "@src/Layout.tsx",
@@ -26,40 +27,80 @@ page MainPage {
   component: import { Main } from "@src/pages/MainPage.tsx"
 }
 
+// Rutas para chat
+route ChatRoute { path: "/chat", to: ChatListPage }
+route ChatDetailRoute { path: "/chat/:id", to: ChatDetailPage }
+
+page ChatListPage {
+  component: import { ChatListPage } from "@src/pages/ChatListPage.tsx"
+}
+
+page ChatDetailPage {
+  component: import { ChatDetailPage } from "@src/pages/ChatDetailPage.tsx"
+}
+
+// Queries para chat
+query getChats {
+  fn: import { getChats } from "@src/chat/operations.ts",
+  entities: [Chat, User]
+}
+
+query getChat {
+  fn: import { getChat } from "@src/chat/operations.ts",
+  entities: [Chat, Message, User]
+}
+
+// Actions para chat
+action createChat {
+  fn: import { createChat } from "@src/chat/operations.ts",
+  entities: [Chat, Message, User]
+}
+
+action addMessage {
+  fn: import { addMessage } from "@src/chat/operations.ts",
+  entities: [Chat, Message, User]
+}
+
+action generateChatResponse {
+  fn: import { generateChatResponse } from "@src/chat/operations.ts",
+  entities: [Chat, Message, User, Document, Section]
+}
+
+// Operaciones existentes para documentos
 action embedDocument {
   fn: import { embedDocument } from "@src/documents.js",
-  entities: [Document, Section],
+  entities: [Document, Section, Chat, Message],
 }
 
 action getScrapeCandidates {
   fn: import { getScrapeCandidates } from "@src/documents.js",
-  entities: [Document, Section],
+  entities: [Document, Section, Chat, Message],
 }
 
 query getDocuments {
   fn: import { getDocuments } from "@src/documents.js",
-  entities: [Document, Section]
+  entities: [Document, Section, Chat, Message]
 }
 
 action searchDocuments {
   fn: import { searchDocuments } from "@src/documents.js",
-  entities: [Document, Section]
+  entities: [Document, Section, Chat, Message]
 }
 
 action askDocuments {
   fn: import { askDocuments } from "@src/documents.js",
-  entities: [Document, Section]
+  entities: [Document, Section, Chat, Message]
 }
 
 action deleteDocument {
   fn: import { deleteDocument } from "@src/documents.js",
-  entities: [Document, Section]
+  entities: [Document, Section, Chat, Message]
 }
 
 // API for Chrome extension
 api askDocumentsApi {
   fn: import { askDocumentsApi } from "@src/apis.js",
-  entities: [Document, Section],
+  entities: [Document, Section, Chat, Message],
   httpRoute: (POST, "/api/ask"),
   auth: true
 }

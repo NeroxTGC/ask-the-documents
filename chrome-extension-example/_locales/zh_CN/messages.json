@@ -1,0 +1,125 @@
+{
+  "appName": {
+    "message": "DeepSeek AI"
+  },
+  "shortDesc": {
+    "message": "使用深度搜索 AI 助手，您可以轻松尝试深度搜索模型，以快速获取有关新中文 AI 的答案和创意。"
+  },
+  "storeDesc": {
+    "message": "🎉 探索深度搜索 AI 的下一代功能\n无论您是经验丰富的开发人员，还是刚刚发现 AI 应用深度搜索，这个扩展都能帮助您轻松适应现代任务。通过利用深度搜索 AI 机器人，您将见证尖端技术如何重塑生产力。\n\n🌟 为什么选择深度搜索 AI？\n➤ 消除冗余步骤：依靠深度搜索 AI 模型快速解读数据。\n➤ 直观的互动：与理解上下文的深度搜索助手自然交流。\n➤ 全球覆盖：即使在中国的 AI 环境中，也能根据本地细微差别定制响应。\n\n🎉 探索新一代人工智能的能力\n无论您是经验丰富的开发人员，还是刚刚发现 AI 应用深度搜索，这个扩展都能帮助您轻松适应现代任务。通过利用 AI 深度搜索，您将见证尖端技术如何重塑生产力。\n\n🎨 深度搜索的核心组件\n💠 AI 工具深度搜索：享受用户友好的面板，按需提供快速见解。\n💠 人工智能助手：与可靠的系统交流，准确解读查询。\n💠 深度搜索 v3：访问最新版本，具备精炼的逻辑和高级功能。\n💠 中国深度搜索：通过集成区域语言支持，迎合广泛的人群。\n\n💡 无与伦比的效率\n利用深度搜索聊天进行实时对话，在几秒钟内从分散的文件中提取相关数据。如果您的重点是高级建模，深度搜索模型会直观地适应您的提示。\n\n🎉 激发创新\n无论您是在原型设计新想法，还是在完善现有概念，机器人都为更深入的见解铺平了道路。快速反馈循环缩短了迭代时间，让您专注于真正重要的事情——创造卓越的成果。\n\n📚 理想的使用场景\n1️⃣ 深度搜索编码器：处理编程查询，从错误修复到代码片段生成。\n2️⃣ 深度搜索在线：保持与云端资源的同步，方便随时随地使用。\n3️⃣ 深度搜索应用：将其与日常任务结合，确保设备间的无缝过渡。\n4️⃣ 深度搜索工具：通过将重复的过程交给强大的自动化来简化您的日常工作。\n\n🚀 迈向未来与深度搜索。\n随着技术的不断发展，保持您的工作流程处于前沿。通过拥抱工具，您为在创新主导的时代取得成功做好准备。让深度搜索编码器处理您的代码需求，深度搜索聊天机器人简化您的日常查询。\n\n⚡ 提升生产力与深度搜索\n💎 即时解决：通过将数据解析委托给深度搜索 AI 机器人来加快工作速度。\n💎 自适应引擎：随着时间的推移，AI 会调整其响应以适应您的个人风格。\n💎 跨平台协同：依靠深度搜索 v3 在浏览器和设备上的集成。\n💎 简化管理：将对话记录和代码建议集中在一个地方。\n\n💼 专业和个人用途\n扩展涵盖广泛的任务——从基本查询到广泛的研究。通过聊天机器人，您可以快速收集事实或进行深入调查。同时，深度搜索 AI 模型可以处理代码生成或优化，减轻繁忙开发人员的负担。\n\n🚀 持续进化\n深度搜索紧跟新突破，发布增量升级以提升性能。通过依赖扩展，您将享受与最新行业标准一致的持续进步。随着时间的推移，这些改进将转化为更高效的工作流程。\n\n🧩 享受协同效应，人工智能将原始的头脑风暴转化为可操作的策略。"
+  },
+
+
+
+  "hey__i_m_your_ai_assistant_": {
+    "message": "你好，我是你的 AI 助手！"
+  },
+  "what_can_i_help_with_": {
+    "message": "我能帮你什么？"
+  },
+  "feedback": {
+    "message": "反馈"
+  },
+  "share": {
+    "message": "分享"
+  },
+  "rate_us": {
+    "message": "评价我们"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "chat_history": {
+    "message": "聊天记录"
+  },
+  "set_personalization": {
+    "message": "设置个性化"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "添加个人信息或指令到 AI 助手，这将帮助提高回复质量。"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "share_us_with_your_friends": {
+    "message": "与朋友分享我们"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "并解锁所有 AI 助手功能"
+  },
+  "copy_link": {
+    "message": "复制链接"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "微博"
+  },
+  "post_preview": {
+    "message": "帖子预览"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "敬请期待 – 即将推出！"
+  },
+  "love_deepseek_": {
+    "message": "喜欢 DeepSeek 吗？"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "能否请您评价我们的扩展程序？"
+  },
+  "did_this_tool_help_you_": {
+    "message": "这个工具对您有帮助吗？"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "与朋友分享这个扩展程序"
+  },
+  "who_would_find_it_useful_": {
+    "message": "谁会觉得它有用？"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "并解锁所有 AI 助手功能"
+  },
+  "help_us_be_better": {
+    "message": "帮助我们变得更好"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "您的反馈很重要。我们可以改进什么？"
+  },
+  "send": {
+    "message": "发送"
+  },
+  "message_deepseek": {
+    "message": "消息 DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "例如，总是用法语回复"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "在新标签页中打开扩展程序"
+  },
+  "new_chat": {
+    "message": "新聊天"
+  },
+  "start_a_chat": {
+    "message": "开始聊天"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>您可以使用 AI 助手，例如：</p><ul><li>检查并纠正英语中的错误</li><li>提供商业领域的咨询</li></ul><p>或者输入您的信息以生成个性化的回复，例如：</p><ul><li>23 岁，58 公斤，身高 165 厘米，女性</li><li>程序员。PHP – Laravel，JS – React。</li></ul>"
+  }
+}

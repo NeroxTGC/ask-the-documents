@@ -1,0 +1,126 @@
+{
+  "appName": {
+    "message": "DeepSeek AI"
+  },
+  "shortDesc": {
+    "message": "Avec DeepSeek AI Assistant, vous pouvez essayer le modèle DeepSeek pour obtenir des réponses rapides et des idées créatives"
+  },
+  "storeDesc": {
+    "message": "🎉 Explorez les capacités de nouvelle génération avec DeepSeek AI\nQue vous soyez un développeur chevronné ou que vous découvriez l'application AI DeepSeek, cette extension vous aide à vous adapter aux tâches modernes avec facilité. En utilisant le bot DeepSeek AI, vous verrez comment la technologie de pointe peut transformer la productivité.\n\n🌟 Pourquoi choisir DeepSeek AI ?\n➤ Élimine les étapes redondantes : fiez-vous au modèle DeepSeek AI pour une interprétation rapide des données.\n➤ Interactions intuitives : discutez naturellement avec un assistant DeepSeek qui comprend le contexte.\n➤ Portée mondiale : même dans un environnement AI chinois, il adapte les réponses aux nuances locales.\n\n🎉 Explorez les capacités de nouvelle génération avec la nouvelle intelligence artificielle\nQue vous soyez un développeur chevronné ou que vous découvriez l'application AI Deep Seek, cette extension vous aide à vous adapter aux tâches modernes avec facilité. En utilisant l'AI DeepSeek, vous verrez comment la technologie de pointe peut transformer la productivité.\n\n🎨 Composants principaux de Deep Seek\n💠 Outil AI DeepSeek : profitez d'un panneau convivial qui fournit des informations rapides à la demande.\n💠 Assistant d'intelligence artificielle : communiquez avec un système fiable qui interprète les requêtes avec précision.\n💠 DeepSeek v3 : accédez à la dernière itération, remplie de logique affinée et de fonctionnalités avancées.\n💠 China DeepSeek : répondez à un large public en intégrant le support linguistique régional.\n\n💡 Efficacité inégalée\nExploitez le chat DeepSeek pour des conversations en temps réel, en extrayant des données pertinentes de fichiers dispersés en quelques secondes. Si votre objectif est la modélisation avancée, le modèle Deep Seek s'adapte intuitivement à vos demandes.\n\n🎉 Inspirez l'innovation\nQue vous prototypiez de nouvelles idées ou que vous affiniez des concepts existants, le bot ouvre la voie à des insights plus profonds. Des boucles de rétroaction rapides réduisent le temps d'itération, vous permettant de vous concentrer sur ce qui compte vraiment : créer des résultats exceptionnels.\n\n📚 Cas d'utilisation idéaux\n1️⃣ DeepSeek coder : Gérez les requêtes de programmation, des corrections de bugs à la génération de snippets.\n2️⃣ DeepSeek online : Restez synchronisé avec les ressources dans le cloud pour plus de commodité en déplacement.\n3️⃣ DeepSeek app : Intégrez-le aux tâches quotidiennes, assurant des transitions fluides entre les appareils.\n4️⃣ DeepSeek tool : Simplifiez votre routine en déléguant les processus répétitifs à une automatisation robuste.\n\n🚀 Entrez dans le futur avec Deep Seek.\nAlors que la technologie continue d'évoluer, gardez votre flux de travail à la pointe. En adoptant l'outil, vous vous positionnez pour réussir dans une ère dominée par l'innovation. Laissez Deep Seek coder gérer vos besoins en code et le chatbot DeepSeek simplifier vos requêtes quotidiennes.\n\n⚡ Augmenter la productivité avec Deep Seek\n💎 Résolution instantanée : Travaillez plus rapidement en déléguant l'analyse des données au bot Deep Seek AI.\n💎 Moteur adaptatif : Au fil du temps, l'AI affine ses réponses pour s'adapter à votre style personnel.\n💎 Synergie multiplateforme : Fiez-vous à l'intégration de Deep Seek v3 sur les navigateurs et les appareils.\n💎 Gestion simplifiée : Combinez les journaux de conversation et les suggestions de code en un seul endroit.\n\n💼 Utilité professionnelle et personnelle\nL'extension couvre un large éventail de tâches, des requêtes de base à la recherche approfondie. Avec le chatbot, vous pouvez rassembler des faits rapides ou entreprendre des enquêtes approfondies. Pendant ce temps, le modèle DeepSeek AI peut gérer la génération ou l'optimisation de code, allégeant la charge des développeurs occupés.\n\n🚀 Évolution continue\nDeep Seek suit le rythme des nouvelles avancées, en publiant des mises à jour incrémentielles qui améliorent les performances. En vous appuyant sur l'extension, vous profiterez d'un progrès constant aligné sur les dernières normes de l'industrie. Au fil du temps, ces améliorations se traduisent par des flux de travail encore plus efficaces.\n\n🧩 Profitez de la synergie alors que l'intelligence artificielle transforme le brainstorming brut en stratégies exploitables."
+  },
+
+
+   "hey__i_m_your_ai_assistant_": {
+    "message": "Salut, c'est l'assistant AI!"
+  },
+  "what_can_i_help_with_": {
+    "message": "Comment puis-je vous aider ?"
+  },
+  "feedback": {
+    "message": " Feedback "
+  },
+  "share": {
+    "message": "Partager"
+  },
+  "rate_us": {
+    "message": "Rate us"
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "chat_history": {
+    "message": "Historique des discussions"
+  },
+  "set_personalization": {
+    "message": "Définir la personnalisation"
+  },
+  "add_personal_info_or_instructions_to_the_ai_assistant__this_will_help_improve_responses_for_you_": {
+    "message": "Ajoutez des informations personnelles ou des instructions à l'assistant AI. Cela améliorera les réponses pour vous."
+  },
+  "save": {
+    "message": "Enregistrer"
+  },
+  "share_us_with_your_friends": {
+    "message": "Partagez-nous avec vos amis"
+  },
+  "and_you_ll_unlock_all_ai_assistant_features": {
+    "message": "Et vous débloquerez toutes les fonctionnalités de l'assistant AI"
+  },
+  "copy_link": {
+    "message": "Le lien"
+  },
+  "facebook": {
+    "message": "Facebook"
+  },
+  "x": {
+    "message": "X"
+  },
+  "telegram": {
+    "message": "Telegram"
+  },
+  "vk_com": {
+    "message": "Vk.com"
+  },
+  "reddit": {
+    "message": "Reddit"
+  },
+  "whatsapp": {
+    "message": "Whatsapp"
+  },
+  "weibo": {
+    "message": "Weibo"
+  },
+  "post_preview": {
+    "message": "Aperçu de la publication"
+  },
+  "stay_tuned__coming_soon_": {
+    "message": "Restez à l'écoute – bientôt disponible !"
+  },
+  "love_deepseek_": {
+    "message": "Vous aimez DeepSeek ?"
+  },
+  "could_you_please_rate_our_extension_": {
+    "message": "Pourriez-vous évaluer notre extension ?"
+  },
+  "did_this_tool_help_you_": {
+    "message": "Cet outil vous a-t-il aidé ?"
+  },
+  "share_this_extension_with_your_friends": {
+    "message": "Partagez cette extension avec vos amis"
+  },
+  "who_would_find_it_useful_": {
+    "message": "Qui pourrait en avoir besoin ?"
+  },
+  "and_unlock_all_ai_assistant_features": {
+    "message": "Et débloquez toutes les fonctionnalités de l'assistant AI"
+  },
+  "help_us_be_better": {
+    "message": "Aidez-nous à nous améliorer"
+  },
+  "your_feedback_matters__what_can_we_improve_": {
+    "message": "Votre avis compte. Que pouvons-nous améliorer ?"
+  },
+  "send": {
+    "message": "Envoyer"
+  },
+  "message_deepseek": {
+    "message": "Message DeepSeek"
+  },
+  "e_g___always_reply_in_french": {
+    "message": "par exemple, toujours répondre en français"
+  },
+  "open_the_extension_in_a_separate_tab": {
+    "message": "Ouvrir l'extension dans un nouvel onglet"
+  },
+  "new_chat": {
+    "message": "Nouvelle discussion"
+  },
+  "start_a_chat": {
+    "message": "Démarrer une discussion"
+  },
+  "_p_you_can_try_the_ai_assistant_to_play_a_role__e_g____p__ul__li_act_as_an_english_teacher_and_correct_my_mistakes__li__li_respond_like_a_professional_business_consultant__li___ul__p_or_input_your_data_for_the_ai_assistant_to_generate_responses__e_g____p__ul__li_23_y_o___58_kg__height_165_cm__female__li__li_programmer__php___laravel__js___react___li___ul_": {
+    "message": "<p>Vous pouvez utiliser l'Assistant AI, par exemple :</p><ul><li>Pour vérifier et corriger les erreurs en anglais</li><li>Pour des conseils en affaires</li></ul><p>Ou bien saisir vos informations pour générer des réponses personnalisées, par exemple :</p><ul><li>23 ans, 58 kg, taille 165 cm, femme</li><li>Développeur. PHP – Laravel, JS – React.</li></ul>"
+  }
+
+
+}
