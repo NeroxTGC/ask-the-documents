@@ -14,11 +14,6 @@ import { toSql } from 'pgvector/utils';
 
 import openai from 'openai';
 
-// Initialize OpenAI client for ChatGPT
-const openaiApi = new openai.OpenAI({
-  apiKey: env.OPENAI_API_KEY,
-});
-
 // Initialize Deepseek client (compatible with OpenAI API)
 const deepseekApi = new openai.OpenAI({
   apiKey: env.DEEPSEEK_API_KEY || env.OPENAI_API_KEY, // Fallback to OpenAI if Deepseek API key is not provided
@@ -227,7 +222,9 @@ export const generateChatResponse: GenerateChatResponse<
     throw new HttpError(401, 'You must be logged in to generate chat responses');
   }
 
-  const { chatId, message, modelType, systemPrompt } = args;
+  const { chatId, message, modelType } = args;
+  // Manejo explícito de systemPrompt para evitar errores de tipo
+  const systemPrompt = args.systemPrompt || '';
 
   // Verificar que el chat pertenece al usuario
   const chat = await prisma.chat.findUnique({
@@ -264,8 +261,6 @@ export const generateChatResponse: GenerateChatResponse<
   // Generar respuesta según el modelo seleccionado
   if (modelType === 'rag') {
     responseContent = await generateRAGResponse(message, systemPrompt);
-  } else if (modelType === 'deepseek') {
-    responseContent = await generateDeepseekResponse(message, chat.messages, systemPrompt);
   } else {
     // Usar Deepseek como modelo por defecto
     responseContent = await generateDeepseekResponse(message, chat.messages, systemPrompt);
@@ -352,6 +347,7 @@ async function generateRAGResponse(query: string, customSystemPrompt?: string): 
 
     const defaultSystemPrompt = "You are a Q&A system. Respond concisely. Mention the source URL. Respond in Markdown. Respond only with content from the documents provided. If the answer is not clear from the documents, respond with 'I don't know'.";
 
+    // Usar Deepseek para la respuesta RAG
     const completion = await deepseekApi.chat.completions.create({
       messages: [
         {
@@ -360,7 +356,8 @@ async function generateRAGResponse(query: string, customSystemPrompt?: string): 
         },
         { role: "user", content: prompt.slice(0, 4000) },
       ],
-      model: "deepseek-chat", // Usando modelo de Deepseek en lugar de GPT
+      model: "deepseek-chat",
+      temperature: 0.3, // Temperatura más baja para respuestas más precisas en RAG
     });
 
     const content = completion.choices[0].message.content;
