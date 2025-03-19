@@ -3,7 +3,11 @@ import { useAction } from 'wasp/client/operations';
 import { createChat } from 'wasp/client/operations';
 import { useNavigate } from 'react-router-dom';
 
-export function NewChatButton() {
+export interface NewChatButtonProps {
+  onChatCreated?: (chatId: string) => void;
+}
+
+export function NewChatButton({ onChatCreated }: NewChatButtonProps = {}) {
   const navigate = useNavigate();
   const createChatFn = useAction(createChat);
 
@@ -13,8 +17,13 @@ export function NewChatButton() {
         title: 'New Chat',
       });
       
-      // Redirigir al nuevo chat
-      navigate(`/chat/${newChat.id}`);
+      // If callback provided, call it with the new chat ID
+      if (onChatCreated) {
+        onChatCreated(newChat.id);
+      } else {
+        // Otherwise, redirect to the new chat
+        navigate(`/chat/${newChat.id}`);
+      }
     } catch (error) {
       console.error('Error creating new chat:', error);
     }

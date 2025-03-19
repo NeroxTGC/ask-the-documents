@@ -4,13 +4,15 @@ import {
   type GetChat, 
   type CreateChat, 
   type AddMessage, 
-  type GenerateChatResponse 
+  type GenerateChatResponse,
+  type DeleteChat
 } from 'wasp/server/operations';
 import { HttpError, prisma, env } from 'wasp/server';
 import { createEmbedding } from '../documents';
-import openai from 'openai';
 // @ts-ignore
 import { toSql } from 'pgvector/utils';
+
+import openai from 'openai';
 
 // Initialize OpenAI client for ChatGPT
 const openaiApi = new openai.OpenAI({
@@ -51,10 +53,16 @@ type GenerateChatResponseInput = {
   chatId: string;
   message: string;
   modelType: string; // "rag", "deepseek", etc.
+  systemPrompt?: string; // Prompt personalizado para el sistema
 };
 type GenerateChatResponseOutput = {
   message: Message;
 };
+
+type DeleteChatInput = {
+  chatId: string;
+};
+type DeleteChatOutput = Chat;
 
 /**
  * Obtiene todos los chats del usuario actual
@@ -219,7 +227,7 @@ export const generateChatResponse: GenerateChatResponse<
     throw new HttpError(401, 'You must be logged in to generate chat responses');
   }
 
-  const { chatId, message, modelType } = args;
+  const { chatId, message, modelType, systemPrompt } = args;
 
   // Verificar que el chat pertenece al usuario
   const chat = await prisma.chat.findUnique({
@@ -255,12 +263,12 @@ export const generateChatResponse: GenerateChatResponse<
 
   // Generar respuesta según el modelo seleccionado
   if (modelType === 'rag') {
-    responseContent = await generateRAGResponse(message);
+    responseContent = await generateRAGResponse(message, systemPrompt);
   } else if (modelType === 'deepseek') {
-    responseContent = await generateDeepseekResponse(message, chat.messages);
+    responseContent = await generateDeepseekResponse(message, chat.messages, systemPrompt);
   } else {
     // Usar Deepseek como modelo por defecto
-    responseContent = await generateDeepseekResponse(message, chat.messages);
+    responseContent = await generateDeepseekResponse(message, chat.messages, systemPrompt);
   }
 
   // Guardar la respuesta del asistente
@@ -277,9 +285,47 @@ export const generateChatResponse: GenerateChatResponse<
 };
 
 /**
+ * Elimina un chat y sus mensajes asociados
+ */
+type DeleteChatArgs = {
+  chatId: string;
+};
+
+export const deleteChat = async (args: DeleteChatArgs, context: any) => {
+  if (!context.user) {
+    throw new HttpError(401, 'You must be logged in to delete a chat.');
+  }
+
+  const chat = await context.entities.Chat.findUnique({
+    where: { id: args.chatId }
+  });
+
+  if (!chat) {
+    throw new HttpError(404, 'Chat not found.');
+  }
+
+  // Verificar que el chat pertenece al usuario
+  if (chat.userId !== context.user.id) {
+    throw new HttpError(403, 'You do not have permission to delete this chat.');
+  }
+
+  // Eliminar todos los mensajes del chat
+  await context.entities.Message.deleteMany({
+    where: { chatId: args.chatId }
+  });
+
+  // Eliminar el chat
+  await context.entities.Chat.delete({
+    where: { id: args.chatId }
+  });
+
+  return { success: true };
+};
+
+/**
  * Genera una respuesta usando RAG (Recuperación Aumentada por Generación)
  */
-async function generateRAGResponse(query: string): Promise<string> {
+async function generateRAGResponse(query: string, customSystemPrompt?: string): Promise<string> {
   try {
     const queryEmbedding = await createEmbedding(query);
 
@@ -304,12 +350,13 @@ async function generateRAGResponse(query: string): Promise<string> {
       .map((r) => `"""${r.content}"""\nSource URL: ${r.url}`)
       .join("\n\n")}`;
 
+    const defaultSystemPrompt = "You are a Q&A system. Respond concisely. Mention the source URL. Respond in Markdown. Respond only with content from the documents provided. If the answer is not clear from the documents, respond with 'I don't know'.";
+
     const completion = await deepseekApi.chat.completions.create({
       messages: [
         {
           role: "system",
-          content:
-            "You are a Q&A system. Respond concisely. Mention the source URL. Respond in Markdown. Respond only with content from the documents provided. If the answer is not clear from the documents, respond with 'I don't know'.",
+          content: customSystemPrompt ?? defaultSystemPrompt,
         },
         { role: "user", content: prompt.slice(0, 4000) },
       ],
@@ -329,7 +376,8 @@ async function generateRAGResponse(query: string): Promise<string> {
  */
 async function generateDeepseekResponse(
   message: string,
-  chatHistory: Message[]
+  chatHistory: Message[],
+  customSystemPrompt?: string
 ): Promise<string> {
   try {
     // Convertir historial de chat al formato esperado por la API
@@ -346,12 +394,14 @@ async function generateDeepseekResponse(
       content: message
     });
 
+    const defaultSystemPrompt = "You are a helpful assistant that provides clear and concise answers.";
+
     // Llamar a la API de Deepseek
     const completion = await deepseekApi.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a helpful assistant that provides clear and concise answers.",
+          content: customSystemPrompt ?? defaultSystemPrompt,
         },
         ...messages,
       ],

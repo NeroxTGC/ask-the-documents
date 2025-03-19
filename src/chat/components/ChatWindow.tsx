@@ -3,26 +3,37 @@ import { useAction } from 'wasp/client/operations';
 import { addMessage, generateChatResponse } from 'wasp/client/operations';
 import { MessageItem } from './MessageItem';
 import { ModelSelector } from './ModelSelector';
+import { DeleteChatButton } from './DeleteChatButton';
 import { type Chat, type Message } from 'wasp/entities';
 
-type ChatWindowProps = {
+export type ChatWindowProps = {
   chat: Chat & { messages: Message[] };
   isLoading?: boolean;
+  onChatDeleted?: () => void;
+  systemPrompt?: string;
 };
 
-export function ChatWindow({ chat, isLoading = false }: ChatWindowProps) {
+export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPrompt = '' }: ChatWindowProps) {
   const [message, setMessage] = useState('');
   const [selectedModel, setSelectedModel] = useState('deepseek');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const addMessageFn = useAction(addMessage);
   const generateResponseFn = useAction(generateChatResponse);
 
+  // Initialize local messages from chat messages
+  useEffect(() => {
+    if (chat?.messages) {
+      setLocalMessages(chat.messages);
+    }
+  }, [chat?.messages]);
+
   // Scroll to bottom whenever messages change
   useEffect(() => {
     scrollToBottom();
-  }, [chat?.messages]);
+  }, [localMessages]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -34,20 +45,37 @@ export function ChatWindow({ chat, isLoading = false }: ChatWindowProps) {
     if (!message.trim() || isGenerating) return;
     
     try {
+      // Immediately add user message to local state
+      const userMessage: Partial<Message> = {
+        id: `temp-${Date.now()}`,
+        content: message.trim(),
+        role: 'user',
+        chatId: chat.id,
+        createdAt: new Date(),
+      };
+      
+      // Update local messages immediately
+      setLocalMessages(prev => [...prev, userMessage as Message]);
+      
+      // Clear the input field immediately
+      setMessage('');
+      
+      // Set generating state
       setIsGenerating(true);
 
-      // Generate response
-      await generateResponseFn({
+      // Generate response in the background
+      generateResponseFn({
         chatId: chat.id,
         message: message.trim(),
-        modelType: selectedModel
+        modelType: selectedModel,
+        systemPrompt: systemPrompt || ''
+      }).catch(error => {
+        console.error('Error generating response:', error);
+      }).finally(() => {
+        setIsGenerating(false);
       });
-
-      // Clear the input field
-      setMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
-    } finally {
       setIsGenerating(false);
     }
   };
@@ -69,43 +97,68 @@ export function ChatWindow({ chat, isLoading = false }: ChatWindowProps) {
     );
   }
 
+  // Combine chat messages with local temporary messages
+  const displayMessages = [...localMessages].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+  
+  // Filtrar el mensaje inicial "How can I help you today?" cuando hay otros mensajes
+  const filteredMessages = displayMessages.filter(msg => {
+    // Si hay más de un mensaje y este es el mensaje de sistema inicial, lo ocultamos
+    if (
+      msg.role === 'system' && 
+      msg.content === 'How can I help you today?' && 
+      displayMessages.some(m => m.role !== 'system')
+    ) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-800 px-4 py-2 flex justify-between items-center">
-        <h1 className="font-medium truncate">{chat.title}</h1>
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+          {chat?.title || 'Chat'}
+        </h2>
+        <div className="flex items-center gap-2">
+          <ModelSelector 
+            selectedModel={selectedModel} 
+            onSelectModel={setSelectedModel} 
+          />
+          <DeleteChatButton 
+            chatId={chat.id} 
+            onDelete={onChatDeleted}
+          />
+        </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 p-4 overflow-y-auto bg-white dark:bg-gray-900">
-        {chat.messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Start a new conversation</h3>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Choose a model and send a message to begin
-              </p>
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {filteredMessages.map((msg: Message) => (
+          <MessageItem key={msg.id} message={msg} />
+        ))}
+        {isGenerating && (
+          <div className="flex items-start">
+            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 max-w-md">
+              <div className="flex items-center space-x-2">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '600ms' }}></div>
+                </div>
+              </div>
             </div>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {chat.messages.map((msg: Message) => (
-              <MessageItem key={msg.id} message={msg} />
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input form */}
       <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-white dark:bg-gray-900">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <ModelSelector 
-              selectedModel={selectedModel} 
-              onChange={setSelectedModel} 
-            />
-            
             {isGenerating && (
               <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

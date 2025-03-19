@@ -1,7 +1,8 @@
-import { Outlet, useLocation, Navigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { NextUIProvider } from "@nextui-org/react";
 import "./Main.css";
 import { useAuth, googleSignInUrl as signInUrl } from 'wasp/client/auth';
+import { ThemeProvider } from './theme/ThemeContext';
 
 export function Layout() {
   const { data: user, isLoading } = useAuth();
@@ -18,10 +19,12 @@ export function Layout() {
   }
 
   return (
-    <NextUIProvider>
-      <div className="dark text-foreground bg-background min-h-screen">
-        <Outlet />
-      </div>
-    </NextUIProvider>
+    <ThemeProvider>
+      <NextUIProvider>
+        <div className="min-h-screen text-foreground bg-background">
+          <Outlet />
+        </div>
+      </NextUIProvider>
+    </ThemeProvider>
   );
 }

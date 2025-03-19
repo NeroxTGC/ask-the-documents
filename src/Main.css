@@ -34,3 +34,12 @@ body {
 .markdown li > p {
   @apply inline;
 }
+
+/* Estilos de transición para el cambio de tema */
+.theme-transition,
+.theme-transition *,
+.theme-transition *:before,
+.theme-transition *:after {
+  transition: all 0.3s ease-in-out !important;
+  transition-delay: 0 !important;
+}

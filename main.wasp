@@ -50,9 +50,14 @@ query getChat {
   entities: [Chat, Message, User]
 }
 
-// Actions para chat
+// Acciones para chat
 action createChat {
   fn: import { createChat } from "@src/chat/operations.ts",
+  entities: [Chat, User]
+}
+
+action deleteChat {
+  fn: import { deleteChat } from "@src/chat/operations.ts",
   entities: [Chat, Message, User]
 }
 

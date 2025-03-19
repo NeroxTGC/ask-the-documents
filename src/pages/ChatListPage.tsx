@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ChatList } from '../chat/components/ChatList';
 import { NewChatButton } from '../chat/components/NewChatButton';
 import { UserStatus } from '../chat/components/UserStatus';
+import { ThemeSwitch } from '../chat/components/ThemeSwitch';
 
 export function ChatListPage() {
   const { data: chats, isLoading, error } = useQuery(getChats);
@@ -21,13 +22,13 @@ export function ChatListPage() {
             Back to Documents
           </Link>
         </div>
-        <div className="p-4">
-          <NewChatButton />
-        </div>
         <div className="flex-1 overflow-y-auto">
           <ChatList chats={chats || []} isLoading={isLoading} />
         </div>
-        <UserStatus />
+        <div className="p-4 space-y-4 border-t border-gray-200 dark:border-gray-800">
+          <ThemeSwitch />
+          <UserStatus />
+        </div>
       </div>
 
       {/* Main content area */}
