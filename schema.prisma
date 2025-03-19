@@ -46,14 +46,16 @@ model Chat {
 }
 
 model Message {
-  id          String    @id @default(uuid())
-  content     String    // Contenido del mensaje
-  role        String    // "user", "assistant", "system"
-  modelType   String    // "rag", "deepseek"
-  embedding   Unsupported("vector(1536)")? // Embedding opcional para funcionalidad RAG
-  createdAt   DateTime  @default(now())
-  chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  chatId      String    // Mensaje pertenece a un chat
+  id                String    @id @default(uuid())
+  content           String    // Contenido del mensaje
+  reasoningContent  String?   // Contenido de razonamiento (COT) para modelo DeepSeek-R1
+  role              String    // "user", "assistant", "system"
+  modelType         String    // "deepseek-v3", "deepseek-r1"
+  useRag            Boolean   @default(false) // Indica si se usa RAG o no
+  embedding         Unsupported("vector(1536)")? // Embedding opcional para funcionalidad RAG
+  createdAt         DateTime  @default(now())
+  chat              Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId            String    // Mensaje pertenece a un chat
   
   @@index([chatId]) // Índice para mejorar rendimiento
 }

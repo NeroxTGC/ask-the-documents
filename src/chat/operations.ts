@@ -41,13 +41,15 @@ type AddMessageInput = {
   content: string;
   role: string;
   modelType: string;
+  useRag?: boolean;
 };
 type AddMessageOutput = Message;
 
 type GenerateChatResponseInput = {
   chatId: string;
   message: string;
-  modelType: string; // "rag", "deepseek", etc.
+  modelType: string; // "deepseek-v3", "deepseek-r1", etc.
+  useRag: boolean; // Indica si se utilizará RAG
   systemPrompt?: string; // Prompt personalizado para el sistema
 };
 type GenerateChatResponseOutput = {
@@ -146,7 +148,8 @@ export const createChat: CreateChat<CreateChatInput, CreateChatOutput> = async (
     data: {
       content: 'How can I help you today?',
       role: 'system',
-      modelType: 'deepseek',
+      modelType: 'deepseek-chat',
+      useRag: false,
       chatId: chat.id,
     },
   });
@@ -165,7 +168,7 @@ export const addMessage: AddMessage<AddMessageInput, AddMessageOutput> = async (
     throw new HttpError(401, 'You must be logged in to add a message');
   }
 
-  const { chatId, content, role, modelType } = args;
+  const { chatId, content, role, modelType, useRag = false } = args;
 
   // Verificar que el chat pertenece al usuario
   const chat = await prisma.chat.findUnique({
@@ -184,6 +187,7 @@ export const addMessage: AddMessage<AddMessageInput, AddMessageOutput> = async (
     content,
     role,
     modelType,
+    useRag,
     chatId
   };
 
@@ -212,7 +216,7 @@ export const addMessage: AddMessage<AddMessageInput, AddMessageOutput> = async (
 };
 
 /**
- * Genera una respuesta de chat según el modelo seleccionado (RAG o Deepseek)
+ * Genera una respuesta de chat según el modelo seleccionado y si se usa RAG
  */
 export const generateChatResponse: GenerateChatResponse<
   GenerateChatResponseInput,
@@ -222,7 +226,7 @@ export const generateChatResponse: GenerateChatResponse<
     throw new HttpError(401, 'You must be logged in to generate chat responses');
   }
 
-  const { chatId, message, modelType } = args;
+  const { chatId, message, modelType, useRag } = args;
   // Manejo explícito de systemPrompt para evitar errores de tipo
   const systemPrompt = args.systemPrompt || '';
 
@@ -251,27 +255,33 @@ export const generateChatResponse: GenerateChatResponse<
     data: {
       content: message,
       role: 'user',
-      modelType: 'user',
+      modelType, // Guardar el tipo de modelo seleccionado por el usuario
+      useRag,
       chatId
     }
   });
 
   let responseContent = '';
+  let reasoningContent: string | null = null;
 
-  // Generar respuesta según el modelo seleccionado
-  if (modelType === 'rag') {
+  // Generar respuesta según si se usa RAG o no
+  if (useRag) {
     responseContent = await generateRAGResponse(message, systemPrompt);
   } else {
-    // Usar Deepseek como modelo por defecto
-    responseContent = await generateDeepseekResponse(message, chat.messages, systemPrompt);
+    // Usar modelo DeepSeek seleccionado
+    const response = await generateDeepseekResponse(message, chat.messages, systemPrompt, modelType);
+    responseContent = response.content;
+    reasoningContent = response.reasoningContent || null;
   }
 
   // Guardar la respuesta del asistente
   const responseMessage = await prisma.message.create({
     data: {
       content: responseContent,
+      reasoningContent: reasoningContent,
       role: 'assistant',
       modelType,
+      useRag,
       chatId
     }
   });
@@ -374,8 +384,9 @@ async function generateRAGResponse(query: string, customSystemPrompt?: string): 
 async function generateDeepseekResponse(
   message: string,
   chatHistory: Message[],
-  customSystemPrompt?: string
-): Promise<string> {
+  customSystemPrompt?: string,
+  modelType: string = 'deepseek-chat'  // Añadir parámetro modelType con valor por defecto
+): Promise<{ content: string; reasoningContent?: string }> {
   try {
     // Convertir historial de chat al formato esperado por la API
     const messages = chatHistory
@@ -392,6 +403,12 @@ async function generateDeepseekResponse(
     });
 
     const defaultSystemPrompt = "You are a helpful assistant that provides clear and concise answers.";
+    
+    // Ya no necesitamos mapear, usamos el modelType directamente
+    // ya que en la UI usamos los mismos valores que la API
+    const model = modelType;
+
+    console.log(`Using model: ${model}`);
 
     // Llamar a la API de Deepseek
     const completion = await deepseekApi.chat.completions.create({
@@ -402,14 +419,25 @@ async function generateDeepseekResponse(
         },
         ...messages,
       ],
-      model: "deepseek-chat", // Modelo de Deepseek 
+      model: model,
       temperature: 0.7,
     });
 
-    const content = completion.choices[0].message.content;
-    return content || "Sorry, I couldn't generate a response.";
+    // Extraer el contenido normal
+    const content = completion.choices[0].message.content || '';
+    
+    // Extraer el contenido de razonamiento (solo disponible para deepseek-reasoner)
+    // @ts-ignore - La propiedad reasoning_content no está en la definición de tipos estándar
+    const reasoningContent = completion.choices[0].message.reasoning_content || null;
+
+    return { 
+      content: content || "Lo siento, no pude generar una respuesta.",
+      reasoningContent
+    };
   } catch (error) {
     console.error('Error generating Deepseek response:', error);
-    return "Sorry, I encountered an error trying to generate a response with Deepseek.";
+    return { 
+      content: "Lo siento, he encontrado un error al intentar generar una respuesta."
+    };
   }
 }

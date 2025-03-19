@@ -15,7 +15,8 @@ export type ChatWindowProps = {
 
 export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPrompt = '' }: ChatWindowProps) {
   const [message, setMessage] = useState('');
-  const [selectedModel, setSelectedModel] = useState('deepseek');
+  const [selectedModel, setSelectedModel] = useState('deepseek-chat');
+  const [useRag, setUseRag] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,8 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
         id: `temp-${Date.now()}`,
         content: message.trim(),
         role: 'user',
+        modelType: selectedModel,
+        useRag: useRag,
         chatId: chat.id,
         createdAt: new Date(),
       };
@@ -68,6 +71,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
         chatId: chat.id,
         message: message.trim(),
         modelType: selectedModel,
+        useRag: useRag,
         systemPrompt: systemPrompt || ''
       }).catch(error => {
         console.error('Error generating response:', error);
@@ -125,7 +129,9 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
         <div className="flex items-center gap-2">
           <ModelSelector 
             selectedModel={selectedModel} 
-            onSelectModel={setSelectedModel} 
+            useRag={useRag}
+            onSelectModel={setSelectedModel}
+            onToggleRag={setUseRag}
           />
           <DeleteChatButton 
             chatId={chat.id} 
