@@ -59,14 +59,6 @@ export function ChatDetailPage() {
     <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
       {/* Sidebar */}
       <div className="w-64 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-          <Link to="/" className="text-blue-600 dark:text-blue-400 flex items-center gap-2 text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Documents
-          </Link>
-        </div>
         <div className="flex-1 overflow-y-auto">
           <ChatList 
             chats={chats || []} 

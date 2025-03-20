@@ -266,7 +266,9 @@ export const generateChatResponse: GenerateChatResponse<
 
   // Generar respuesta según si se usa RAG o no
   if (useRag) {
-    responseContent = await generateRAGResponse(message, systemPrompt);
+    const ragResponse = await generateRAGResponse(message, systemPrompt, modelType);
+    responseContent = ragResponse.content;
+    reasoningContent = ragResponse.reasoningContent || null;
   } else {
     // Usar modelo DeepSeek seleccionado
     const response = await generateDeepseekResponse(message, chat.messages, systemPrompt, modelType);
@@ -330,8 +332,13 @@ export const deleteChat = async (args: DeleteChatArgs, context: any) => {
 /**
  * Genera una respuesta usando RAG (Recuperación Aumentada por Generación)
  */
-async function generateRAGResponse(query: string, customSystemPrompt?: string): Promise<string> {
+async function generateRAGResponse(
+  query: string, 
+  customSystemPrompt?: string,
+  modelType: string = 'deepseek-chat' // Añadir parámetro modelType con valor por defecto
+): Promise<{ content: string; reasoningContent?: string }> {
   try {
+    // Realizar la búsqueda de similaridad directamente en la base de datos
     const queryEmbedding = await createEmbedding(query);
 
     const result = (await prisma.$queryRaw`
@@ -348,16 +355,24 @@ async function generateRAGResponse(query: string, customSystemPrompt?: string): 
       url: string;
     }[];
 
+    if (!result || result.length === 0) {
+      return { 
+        content: "No encontré documentos relevantes para responder a tu pregunta." 
+      };
+    }
+
     const prompt = `Provide an answer to the following: ${query}
     
     You can use the following documents delimited by triple quotes:
     ${result
-      .map((r) => `"""${r.content}"""\nSource URL: ${r.url}`)
+      .map((r: { content: string; url: string }) => `"""${r.content}"""\nSource URL: ${r.url}`)
       .join("\n\n")}`;
 
     const defaultSystemPrompt = "You are a Q&A system. Respond concisely. Mention the source URL. Respond in Markdown. Respond only with content from the documents provided. If the answer is not clear from the documents, respond with 'I don't know'.";
 
-    // Usar Deepseek para la respuesta RAG
+    // Usar el modelo especificado para la respuesta RAG
+    console.log(`Using model for RAG: ${modelType}`);
+
     const completion = await deepseekApi.chat.completions.create({
       messages: [
         {
@@ -366,15 +381,26 @@ async function generateRAGResponse(query: string, customSystemPrompt?: string): 
         },
         { role: "user", content: prompt.slice(0, 4000) },
       ],
-      model: "deepseek-chat",
+      model: modelType,
       temperature: 0.3, // Temperatura más baja para respuestas más precisas en RAG
     });
 
-    const content = completion.choices[0].message.content;
-    return content || "Sorry, I don't know the answer to that.";
+    // Extraer el contenido normal
+    const content = completion.choices[0].message.content || '';
+    
+    // Extraer el contenido de razonamiento (solo disponible para deepseek-reasoner)
+    // @ts-ignore - La propiedad reasoning_content no está en la definición de tipos estándar
+    const reasoningContent = completion.choices[0].message.reasoning_content || null;
+
+    return { 
+      content: content || "Lo siento, no pude generar una respuesta.",
+      reasoningContent
+    };
   } catch (error) {
     console.error('Error generating RAG response:', error);
-    return "Sorry, I encountered an error trying to generate a response.";
+    return { 
+      content: "Lo siento, he encontrado un error al intentar generar una respuesta." 
+    };
   }
 }
 
