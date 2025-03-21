@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAction } from 'wasp/client/operations';
 import { addMessage, generateChatResponse } from 'wasp/client/operations';
 import { MessageItem } from './MessageItem';
-import { ModelSelector } from './ModelSelector';
 import { DeleteChatButton } from './DeleteChatButton';
 import { type Chat, type Message } from 'wasp/entities';
+import { Button, Textarea, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 
 export type ChatWindowProps = {
   chat: Chat & { messages: Message[] };
@@ -127,12 +127,6 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
           {chat?.title || 'Chat'}
         </h2>
         <div className="flex items-center gap-2">
-          <ModelSelector 
-            selectedModel={selectedModel} 
-            useRag={useRag}
-            onSelectModel={setSelectedModel}
-            onToggleRag={setUseRag}
-          />
           <DeleteChatButton 
             chatId={chat.id} 
             onDelete={onChatDeleted}
@@ -161,52 +155,133 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input form */}
-      <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-gray-100 dark:bg-gray-700">
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="flex justify-between items-center mb-2">
-            {isGenerating && (
-              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Generating...
+      {/* Input form - Using modified HomeChatInput */}
+      <div className="flex justify-center items-center py-4">
+        <div className="max-w-lg w-full mx-auto">
+          <div className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+              <Textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Message DeepSeek"
+                disabled={isGenerating}
+                className="w-full border-0 focus:ring-0 focus:outline-none min-h-[100px]"
+                classNames={{
+                  inputWrapper: [
+                    "bg-gray-100 dark:bg-gray-700",
+                    "shadow-none",
+                    "border-0",
+                    "!ring-0",
+                    "!ring-offset-0",
+                    "hover:!bg-gray-100 dark:hover:!bg-gray-700",
+                    "data-[hover=true]:bg-gray-100 dark:data-[hover=true]:bg-gray-700",
+                    "group-data-[focus=true]:bg-gray-100 dark:group-data-[focus=true]:bg-gray-700"
+                  ].join(" "),
+                  input: "focus:bg-gray-100 dark:focus:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
+              />
+              
+              <div className="flex items-center gap-2 px-3 py-3 bg-gray-100 dark:bg-gray-700">
+                <Button
+                  type="button"
+                  onClick={() => setSelectedModel(selectedModel === 'deepseek-chat' ? 'deepseek-reasoner' : 'deepseek-chat')}
+                  className={`px-3 py-1 text-xs rounded-full transition-all ${
+                    selectedModel === 'deepseek-reasoner' 
+                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700' 
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700'
+                  }`}
+                  size="sm"
+                  startContent={
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M23 12a11 11 0 0 1-22 0 11 11 0 0 1 22 0z"></path>
+                      <path d="M22 12h1"></path>
+                      <path d="M12 2V1"></path>
+                      <path d="M12 23v-1"></path>
+                      <path d="M20 20l-1-1"></path>
+                      <path d="M1 12h1"></path>
+                      <path d="M4 4l1 1"></path>
+                      <path d="M4 20l1-1"></path>
+                      <path d="M20 4l-1 1"></path>
+                    </svg>
+                  }
+                >
+                  DeepThink (R1)
+                </Button>
+                
+                <Popover placement="top" showArrow={true}>
+                  <PopoverTrigger>
+                    <span>
+                      <Button
+                        type="button"
+                        onClick={() => setUseRag(!useRag)}
+                        className={`px-3 py-1 text-xs rounded-full transition-all ${
+                          useRag 
+                            ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700' 
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700'
+                        }`}
+                        size="sm"
+                        startContent={
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <line x1="10" y1="9" x2="8" y2="9"></line>
+                          </svg>
+                        }
+                      >
+                        Use Docs
+                      </Button>
+                    </span>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div className="px-1 py-2 w-72">
+                      <div className="text-sm font-bold">Documents</div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {useRag ? 'RAG enabled. Using your documents for context.' : 'RAG disabled. Enable to use your documents.'}
+                      </p>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                
+                <div className="ml-auto">
+                  <Button
+                    type="submit"
+                    isIconOnly
+                    disabled={!message.trim() || isGenerating}
+                    className={`rounded-full flex items-center justify-center ${
+                      !message.trim() || isGenerating 
+                        ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-text'
+                        : 'bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 text-white shadow-sm'
+                    } w-7 h-7 min-w-0 p-0`}
+                    size="sm"
+                  >
+                    {isGenerating ? (
+                      <div className="flex space-x-1">
+                        <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '600ms' }}></div>
+                      </div>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </Button>
+                </div>
               </div>
-            )}
+            </form>
           </div>
-          
-          <div className="flex space-x-2">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              rows={1}
-              className="flex-1 resize-none border border-gray-300 dark:border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-600 dark:text-white"
-              disabled={isGenerating}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            />
-            <button
-              type="submit"
-              disabled={!message.trim() || isGenerating}
-              className={`
-                px-4 py-2 rounded-md text-white
-                ${!message.trim() || isGenerating
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'}
-              `}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
-          </div>
-        </form>
+          <p className="text-sm text-center text-gray-500 dark:text-gray-400 p-3">
+            Press <span className="font-mono px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">Enter</span> to send or <span className="font-mono px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">Shift+Enter</span> for a new line
+          </p>
+        </div>
       </div>
     </div>
   );
