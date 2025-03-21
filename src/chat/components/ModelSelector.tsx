@@ -16,7 +16,7 @@ export function ModelSelector({ selectedModel, useRag, onSelectModel, onToggleRa
           <select
             value={selectedModel}
             onChange={(e) => onSelectModel(e.target.value)}
-            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md py-1 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+            className="bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-700 rounded-md py-1 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
           >
             <option value="deepseek-chat">DeepSeek-V3</option>
             <option value="deepseek-reasoner">DeepSeek-R1</option>

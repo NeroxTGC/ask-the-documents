@@ -2,12 +2,14 @@ import React from 'react';
 import { useAction } from 'wasp/client/operations';
 import { createChat } from 'wasp/client/operations';
 import { useNavigate } from 'react-router-dom';
+import { Button, Tooltip } from '@nextui-org/react';
 
 export interface NewChatButtonProps {
   onChatCreated?: (chatId: string) => void;
+  isCompact?: boolean;
 }
 
-export function NewChatButton({ onChatCreated }: NewChatButtonProps = {}) {
+export function NewChatButton({ onChatCreated, isCompact = false }: NewChatButtonProps) {
   const navigate = useNavigate();
   const createChatFn = useAction(createChat);
 
@@ -29,10 +31,27 @@ export function NewChatButton({ onChatCreated }: NewChatButtonProps = {}) {
     }
   };
 
+  if (isCompact) {
+    return (
+      <Tooltip content="New Chat" placement="right">
+        <Button
+          isIconOnly
+          variant="light"
+          onClick={handleNewChat}
+          className="w-7 h-7 min-w-0 p-0"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </Button>
+      </Tooltip>
+    );
+  }
+
   return (
     <button
       onClick={handleNewChat}
-      className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+      className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

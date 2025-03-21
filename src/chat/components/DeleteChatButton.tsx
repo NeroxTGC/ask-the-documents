@@ -1,7 +1,7 @@
 import React from 'react';
-import { deleteChat } from 'wasp/client/operations';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Button, Popover, PopoverTrigger, PopoverContent } from '@nextui-org/react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { deleteChat } from 'wasp/client/operations';
 
 type DeleteChatButtonProps = {
   chatId: string;
@@ -52,6 +52,10 @@ export function DeleteChatButton({ chatId, onDelete }: DeleteChatButtonProps) {
           size="sm" 
           variant="light" 
           className="text-default-400 hover:text-danger"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -70,7 +74,7 @@ export function DeleteChatButton({ chatId, onDelete }: DeleteChatButtonProps) {
           </svg>
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent onClick={(e) => e.stopPropagation()}>
         <div className="px-1 py-2">
           <div className="text-small font-bold mb-2">Are you sure?</div>
           <p className="text-tiny text-default-500 mb-2">
@@ -80,14 +84,22 @@ export function DeleteChatButton({ chatId, onDelete }: DeleteChatButtonProps) {
             <Button 
               size="sm" 
               variant="flat"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
             >
               Cancel
             </Button>
             <Button 
               size="sm" 
               color="danger" 
-              onClick={handleDelete}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleDelete();
+              }}
               isLoading={isLoading}
             >
               Delete

@@ -87,7 +87,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
   if (isLoading) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex-1 p-4 overflow-y-auto bg-white dark:bg-gray-900">
+        <div className="flex-1 p-4 overflow-y-auto bg-white dark:bg-gray-800">
           <div className="animate-pulse space-y-3">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex flex-col space-y-2">
@@ -122,7 +122,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-white dark:bg-gray-800">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
           {chat?.title || 'Chat'}
         </h2>
@@ -141,7 +141,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-gray-800">
         {filteredMessages.map((msg: Message) => (
           <MessageItem key={msg.id} message={msg} />
         ))}
@@ -162,7 +162,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
       </div>
 
       {/* Input form */}
-      <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-white dark:bg-gray-900">
+      <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-gray-100 dark:bg-gray-700">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-between items-center mb-2">
             {isGenerating && (
@@ -182,7 +182,7 @@ export function ChatWindow({ chat, isLoading = false, onChatDeleted, systemPromp
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type your message..."
               rows={1}
-              className="flex-1 resize-none border border-gray-300 dark:border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+              className="flex-1 resize-none border border-gray-300 dark:border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-600 dark:text-white"
               disabled={isGenerating}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {

@@ -46,7 +46,7 @@ export function HomeChatInput() {
   return (
     <div className="w-full">
       <form onSubmit={handleSendMessage} className="flex flex-col gap-2">
-        <div className="relative bg-white dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+        <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
           <Textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -55,16 +55,16 @@ export function HomeChatInput() {
             className="w-full border-0 focus:ring-0 focus:outline-none min-h-[100px]"
             classNames={{
               inputWrapper: [
-                "bg-transparent",
+                "bg-gray-100 dark:bg-gray-700",
                 "shadow-none",
                 "border-0",
                 "!ring-0",
                 "!ring-offset-0",
-                "hover:!bg-transparent",
-                "data-[hover=true]:bg-transparent",
-                "group-data-[focus=true]:bg-transparent"
+                "hover:!bg-gray-100 dark:hover:!bg-gray-700",
+                "data-[hover=true]:bg-gray-100 dark:data-[hover=true]:bg-gray-700",
+                "group-data-[focus=true]:bg-gray-100 dark:group-data-[focus=true]:bg-gray-700"
               ].join(" "),
-              input: "focus:bg-transparent dark:focus:bg-transparent hover:bg-transparent dark:hover:bg-transparent"
+              input: "focus:bg-gray-100 dark:focus:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -74,7 +74,7 @@ export function HomeChatInput() {
             }}
           />
           
-          <div className="mt-2 flex items-center gap-2 px-3 py-3 border-t border-gray-200 dark:border-gray-800">
+          <div className="mt-2 flex items-center gap-2 px-3 py-3 border-t border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-700">
             <Button
               type="button"
               onClick={() => setSelectedModel(selectedModel === 'deepseek-chat' ? 'deepseek-reasoner' : 'deepseek-chat')}
@@ -103,27 +103,29 @@ export function HomeChatInput() {
             
             <Popover placement="top" showArrow={true}>
               <PopoverTrigger>
-                <Button
-                  type="button"
-                  onClick={() => setUseRag(!useRag)}
-                  className={`px-3 py-1 text-xs rounded-full transition-all ${
-                    useRag 
-                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600' 
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700'
-                  }`}
-                  size="sm"
-                  startContent={
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                      <line x1="10" y1="9" x2="8" y2="9"></line>
-                    </svg>
-                  }
-                >
-                  Use Docs
-                </Button>
+                <span>
+                  <Button
+                    type="button"
+                    onClick={() => setUseRag(!useRag)}
+                    className={`px-3 py-1 text-xs rounded-full transition-all ${
+                      useRag 
+                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-700' 
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700'
+                    }`}
+                    size="sm"
+                    startContent={
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <line x1="10" y1="9" x2="8" y2="9"></line>
+                      </svg>
+                    }
+                  >
+                    Use Docs
+                  </Button>
+                </span>
               </PopoverTrigger>
               <PopoverContent>
                 <div className="px-1 py-2 w-72">
@@ -142,7 +144,7 @@ export function HomeChatInput() {
                 disabled={!message.trim() || isLoading}
                 className={`rounded-full flex items-center justify-center ${
                   !message.trim() || isLoading 
-                    ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                    ? 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-text'
                     : 'bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 text-white shadow-sm'
                 } w-7 h-7 min-w-0 p-0`}
                 size="sm"

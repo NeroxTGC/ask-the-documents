@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { deleteDocument, useQuery, getDocuments } from "wasp/client/operations";
 import { embedDocument } from "wasp/client/operations";
-import { Button, Input, Tooltip, Card, Tabs, Tab } from "@nextui-org/react";
+import { Button, Input, Tooltip, Card } from "@nextui-org/react";
 import { Document } from '../../types';
 
 export function DocumentSidebar() {
@@ -10,6 +10,24 @@ export function DocumentSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const { data: documents, isLoading } = useQuery(getDocuments) as { data: Document[] | undefined, isLoading: boolean };
+
+  // Auto-collapse on small screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsCollapsed(true);
+      }
+    };
+    
+    // Set initial state
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleAddDocument = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +51,7 @@ export function DocumentSidebar() {
 
   if (isCollapsed) {
     return (
-      <div className="w-12 border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col items-center">
+      <div className="w-12 border-l border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 flex flex-col items-center">
         <Tooltip content="Expand Documents Panel" placement="left">
           <Button 
             isIconOnly 
@@ -42,13 +60,28 @@ export function DocumentSidebar() {
             onClick={() => setIsCollapsed(false)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 6h16"></path>
-              <path d="M4 12h16"></path>
-              <path d="M4 18h16"></path>
+              <path d="M13 4l-5 8 5 8"></path>
+              <path d="M21 12H4"></path>
             </svg>
           </Button>
         </Tooltip>
         <div className="flex-1 flex flex-col items-center py-8 space-y-8">
+          <Tooltip content="Add Document" placement="left">
+            <Button
+              isIconOnly
+              size="sm"
+              variant="light"
+              onClick={() => setIsCollapsed(false)}
+              className="text-primary"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </Button>
+          </Tooltip>
           <Tooltip content="Documents" placement="left">
             <div className="flex flex-col items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -71,8 +104,8 @@ export function DocumentSidebar() {
   }
 
   return (
-    <div className="w-72 border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col">
-      <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
+    <div className="w-72 border-l border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 flex flex-col">
+      <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
         <h2 className="text-lg font-medium">Documents</h2>
         <Button 
           isIconOnly 
@@ -81,108 +114,96 @@ export function DocumentSidebar() {
           onClick={() => setIsCollapsed(true)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <path d="M11 4l5 8-5 8"></path>
+            <path d="M4 12h16"></path>
           </svg>
         </Button>
       </div>
       
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-        <Tabs 
-          aria-label="Document upload options" 
-          color="primary" 
-          variant="underlined" 
-          classNames={{
-            tabList: "gap-2 w-full relative rounded-none p-0 border-b border-divider",
-            cursor: "w-full bg-primary",
-            tab: "max-w-fit px-2 h-8",
-            tabContent: "group-data-[selected=true]:text-primary"
-          }}
-        >
-          <Tab key="url" title="URL">
-            <form onSubmit={handleAddDocument} className="space-y-2 pt-2">
-              <Input
-                type="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="Add document URL"
-                size="sm"
-                classNames={{
-                  input: "dark:bg-gray-800 dark:text-white",
-                  inputWrapper: "dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700"
-                }}
-                startContent={
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                  </svg>
-                }
-                disabled={isUploading}
-              />
-              <Button 
-                type="submit" 
-                color="primary" 
-                className="dark:bg-indigo-700 dark:hover:bg-indigo-600"
-                size="sm"
-                isLoading={isUploading}
-                disabled={!url.trim() || isUploading}
-                fullWidth
-              >
-                Add Document
-              </Button>
-            </form>
-          </Tab>
-          <Tab key="upload" title="Upload">
-            <div className="pt-2">
-              <div 
-                className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors cursor-pointer
-                  ${isDragging 
-                    ? 'border-primary bg-primary/10' 
-                    : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
-                  }
-                  bg-gray-50 dark:bg-gray-800
-                `}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragging(true);
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  // No real functionality, just UI
-                }}
-                onClick={() => {
-                  // This would normally trigger a file input click
-                }}
-              >
-                <div className="flex flex-col items-center justify-center py-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className={`h-10 w-10 mb-2 ${isDragging ? 'text-primary' : 'text-gray-400 dark:text-gray-500'}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                  <p className="text-sm font-medium mb-1">Drag & Drop Files</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">or click to browse</p>
-                </div>
-              </div>
-              <div className="mt-3">
-                <Button
-                  color="primary"
-                  className="dark:bg-indigo-700 dark:hover:bg-indigo-600"
-                  size="sm"
-                  disabled={isUploading}
-                  fullWidth
-                >
-                  Upload Documents
-                </Button>
-              </div>
-              <div className="mt-2 text-xs text-center text-gray-500 dark:text-gray-400">
-                Supported formats: PDF, DOCX, TXT
-              </div>
-            </div>
-          </Tab>
-        </Tabs>
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
+        <form onSubmit={handleAddDocument} className="space-y-2">
+          <Input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Add document URL"
+            size="sm"
+            classNames={{
+              inputWrapper: [
+                "bg-white dark:bg-gray-800",
+                "shadow-none",
+                "border-1 border-gray-300 dark:border-gray-700",
+                "!ring-0",
+                "!ring-offset-0",
+                "hover:!bg-white dark:hover:!bg-gray-800",
+                "data-[hover=true]:bg-white dark:data-[hover=true]:bg-gray-800",
+                "group-data-[focus=true]:bg-white dark:group-data-[focus=true]:bg-gray-800"
+              ].join(" "),
+              input: "focus:bg-white dark:focus:bg-gray-800 hover:bg-white dark:hover:bg-gray-800 dark:text-white"
+            }}
+            startContent={
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+            }
+            disabled={isUploading}
+          />
+          <Button 
+            type="submit" 
+            color="primary" 
+            className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+            size="sm"
+            isLoading={isUploading}
+            disabled={!url.trim() || isUploading}
+            startContent={
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H4" />
+              </svg>
+            }
+          >
+            Add Document
+          </Button>
+        </form>
+
+        <div className="pt-4">
+          <div 
+            className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors cursor-pointer
+              ${isDragging 
+                ? 'border-primary bg-primary/10' 
+                : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+              }
+              bg-white dark:bg-gray-800
+            `}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsDragging(true);
+            }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setIsDragging(false);
+              // No real functionality, just UI
+            }}
+            onClick={() => {
+              // This would normally trigger a file input click
+            }}
+          >
+            {isDragging ? (
+              <p className="text-sm text-primary">Drop to upload</p>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Drag & drop files or click to browse</p>
+              </>
+            )}
+          </div>
+          <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+            Supported formats: PDF, TXT, DOCX
+          </p>
+        </div>
       </div>
       
       <div className="flex-1 overflow-y-auto p-2">
@@ -210,37 +231,25 @@ export function DocumentSidebar() {
         
         {!isLoading && documents && documents.length > 0 && (
           <div className="space-y-2">
-            {documents.map((document) => (
-              <Card key={document.id} className="p-3 hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors">
-                <div className="flex">
-                  <div className="flex-shrink-0 mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                    </svg>
-                  </div>
+            {documents.map((doc) => (
+              <Card key={doc.id} className="p-3 mb-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer dark:bg-gray-800/70">
+                <div className="flex justify-between items-start">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-medium truncate" title={document.title}>
-                      {document.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate" title={document.url}>
-                      {document.url}
-                    </p>
+                    <h3 className="text-sm font-medium truncate" title={doc.title}>{doc.title}</h3>
+                    <p className="text-xs text-gray-500 truncate mt-1">{new URL(doc.url).hostname}</p>
                   </div>
-                  <div>
-                    <Button
-                      isIconOnly
-                      size="sm"
-                      variant="light"
-                      color="danger"
-                      onClick={() => deleteDocument({ id: document.id })}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 6h18"></path>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                    </Button>
-                  </div>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    className="min-w-0 w-6 h-6 p-0 text-gray-500 hover:text-red-500"
+                    onClick={() => deleteDocument({ id: doc.id })}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                    </svg>
+                  </Button>
                 </div>
               </Card>
             ))}

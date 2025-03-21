@@ -8,7 +8,7 @@ type MessageItemProps = {
 
 export function MessageItem({ message }: MessageItemProps) {
   const isUser = message.role === 'user';
-  const isSystem = message.role === 'system';
+  const isSystem = message.role === 'system' as any;
   const [isReasoningOpen, setIsReasoningOpen] = useState(false);
 
   return (
@@ -18,14 +18,14 @@ export function MessageItem({ message }: MessageItemProps) {
       <div 
         className={`
           max-w-[85%] md:max-w-[75%] lg:max-w-[65%] rounded-lg px-4 py-3 mb-2
-          ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800'}
-          ${isSystem ? 'italic bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-sm' : ''}
+          ${isUser ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700'}
+          ${isSystem ? 'italic bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-sm' : ''}
         `}
       >
-        {message.modelType && !isUser && !isSystem && (
+        {(message as any).modelType && !isUser && !isSystem && (
           <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-            {message.modelType}
-            {message.useRag && ' + RAG'}
+            {(message as any).modelType}
+            {(message as any).useRag && ' + RAG'}
           </div>
         )}
         
@@ -39,7 +39,7 @@ export function MessageItem({ message }: MessageItemProps) {
           </ReactMarkdown>
         )}
         
-        {message.reasoningContent && !isUser && !isSystem && (
+        {(message as any).reasoningContent && !isUser && !isSystem && (
           <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
             <button 
               onClick={() => setIsReasoningOpen(!isReasoningOpen)}
@@ -57,12 +57,12 @@ export function MessageItem({ message }: MessageItemProps) {
             </button>
             
             {isReasoningOpen && (
-              <div className="text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 p-3 rounded my-2 border border-gray-200 dark:border-gray-700">
+              <div className="text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded my-2 border border-gray-200 dark:border-gray-700">
                 <div className="mb-2 text-xs text-gray-500 dark:text-gray-400 font-medium">Proceso de razonamiento:</div>
                 <ReactMarkdown 
                   className="prose dark:prose-invert prose-sm max-w-none"
                 >
-                  {message.reasoningContent}
+                  {(message as any).reasoningContent}
                 </ReactMarkdown>
               </div>
             )}

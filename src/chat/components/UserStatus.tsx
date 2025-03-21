@@ -1,14 +1,37 @@
 import React from 'react';
 import { logout, useAuth, googleSignInUrl as signInUrl } from 'wasp/client/auth';
-import { Button } from '@nextui-org/react';
+import { Button, Tooltip } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 
-export function UserStatus() {
+export interface UserStatusProps {
+  isCompact?: boolean;
+}
+
+export function UserStatus({ isCompact = false }: UserStatusProps) {
   const { data: user } = useAuth();
 
   if (!user) {
+    if (isCompact) {
+      return (
+        <Tooltip content="Login with Google" placement="right">
+          <Button 
+            as="a"
+            href={signInUrl}
+            isIconOnly
+            size="sm"
+            variant="light"
+            className="flex items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clipRule="evenodd" />
+            </svg>
+          </Button>
+        </Tooltip>
+      );
+    }
+    
     return (
-      <div className="mt-auto p-4 border-t border-gray-200 dark:border-gray-800">
+      <div className="mt-auto p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
         <Button 
           as="a"
           href={signInUrl}
@@ -26,8 +49,24 @@ export function UserStatus() {
     );
   }
 
+  if (isCompact) {
+    return (
+      <Tooltip content={`Signed in as ${user.email || 'User'}`} placement="right">
+        <button
+          onClick={logout}
+          className="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden"
+          aria-label="Logout"
+        >
+          <span className="text-sm font-medium">
+            {(user.email?.[0] || 'U').toUpperCase()}
+          </span>
+        </button>
+      </Tooltip>
+    );
+  }
+
   return (
-    <div className="mt-auto p-4 border-t border-gray-200 dark:border-gray-800">
+    <div className="mt-auto p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
       <div className="flex items-center gap-3">
         <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
           <span className="text-sm font-medium">
