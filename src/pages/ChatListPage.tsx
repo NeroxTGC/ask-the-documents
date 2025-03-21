@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "wasp/client/operations";
 import { getChats, createChat } from "wasp/client/operations";
-import { ChatList } from '../chat/components/ChatList';
+import { ChatSidebar } from '../chat/components/ChatSidebar';
 import { UserStatus } from '../chat/components/UserStatus';
 import { ThemeSwitch } from '../chat/components/ThemeSwitch';
 import { HomeChatInput } from '../chat/components/HomeChatInput';
@@ -85,29 +85,10 @@ export function ChatListPage() {
           </div>
         </div>
       ) : (
-        <div className="w-64 border-r border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 flex flex-col">
-          <div className="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-800">
-            <h2 className="text-lg font-medium">Chats</h2>
-            <Button 
-              isIconOnly 
-              variant="light" 
-              size="sm"
-              onClick={() => setIsLeftSidebarCollapsed(true)}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 4l5 8-5 8"></path>
-                <path d="M4 12h16"></path>
-              </svg>
-            </Button>
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            <ChatList chats={chats || []} isLoading={isLoading} />
-          </div>
-          <div className="p-4 space-y-4 border-t border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900">
-            <ThemeSwitch />
-            <UserStatus />
-          </div>
-        </div>
+        <ChatSidebar 
+          chats={chats || []} 
+          isLoading={isLoading}
+        />
       )}
 
       {/* Main content area */}

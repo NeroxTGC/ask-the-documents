@@ -27,16 +27,12 @@ page MainPage {
   component: import { Main } from "@src/pages/MainPage.tsx"
 }
 
-// Rutas para chat
-route ChatRoute { path: "/chat", to: ChatListPage }
-route ChatDetailRoute { path: "/chat/:id", to: ChatDetailPage }
+// Rutas para chat unificadas
+route ChatRoute { path: "/chat", to: ChatPage }
+route ChatDetailRoute { path: "/chat/:id", to: ChatPage }
 
-page ChatListPage {
-  component: import { ChatListPage } from "@src/pages/ChatListPage.tsx"
-}
-
-page ChatDetailPage {
-  component: import { ChatDetailPage } from "@src/pages/ChatDetailPage.tsx"
+page ChatPage {
+  component: import { ChatPage } from "@src/pages/ChatPage.tsx"
 }
 
 // Queries para chat
