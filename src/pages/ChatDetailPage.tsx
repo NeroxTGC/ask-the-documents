@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery, getChat, getChats } from 'wasp/client/operations';
+import { useQuery, getChat, getChats, createChat } from 'wasp/client/operations';
 import { ChatList } from '../chat/components/ChatList';
 import { ChatWindow } from '../chat/components/ChatWindow';
 import { UserStatus } from '../chat/components/UserStatus';
@@ -72,6 +72,16 @@ export function ChatDetailPage() {
     navigate(`/chat/${newChatId}`);
   };
 
+  // Function to create a new chat
+  const handleCreateNewChat = async () => {
+    try {
+      const newChat = await createChat({ title: 'New Chat' });
+      navigate(`/chat/${newChat.id}`);
+    } catch (error) {
+      console.error('Failed to create new chat:', error);
+    }
+  };
+
   // If no id, don't render the rest
   if (!chatId) return null;
 
@@ -94,6 +104,21 @@ export function ChatDetailPage() {
             </Button>
           </Tooltip>
           <div className="flex-1 flex flex-col items-center py-8 space-y-8">
+            <Tooltip content="New Chat" placement="right">
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onClick={handleCreateNewChat}
+                className="text-primary"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  <line x1="12" y1="11" x2="12" y2="17"></line>
+                  <line x1="9" y1="14" x2="15" y2="14"></line>
+                </svg>
+              </Button>
+            </Tooltip>
           </div>
           <div className="mt-auto mb-16">
             <ThemeSwitch isCompact={true} />

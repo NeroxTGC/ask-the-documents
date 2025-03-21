@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "wasp/client/operations";
-import { getChats } from "wasp/client/operations";
+import { getChats, createChat } from "wasp/client/operations";
 import { ChatList } from '../chat/components/ChatList';
 import { UserStatus } from '../chat/components/UserStatus';
 import { ThemeSwitch } from '../chat/components/ThemeSwitch';
 import { HomeChatInput } from '../chat/components/HomeChatInput';
 import { DocumentSidebar } from '../chat/components/DocumentSidebar';
 import { Button, Tooltip } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 export function ChatListPage() {
   const { data: chats, isLoading } = useQuery(getChats);
   const [isLeftSidebarCollapsed, setIsLeftSidebarCollapsed] = useState(false);
+  const navigate = useNavigate();
 
   // Auto-collapse on small screens
   useEffect(() => {
@@ -29,6 +31,16 @@ export function ChatListPage() {
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Function to create a new chat
+  const handleCreateNewChat = async () => {
+    try {
+      const newChat = await createChat({ title: 'New Chat' });
+      navigate(`/chat/${newChat.id}`);
+    } catch (error) {
+      console.error('Failed to create new chat:', error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
@@ -54,7 +66,7 @@ export function ChatListPage() {
                 isIconOnly
                 size="sm"
                 variant="light"
-                onClick={() => setIsLeftSidebarCollapsed(false)}
+                onClick={handleCreateNewChat}
                 className="text-primary"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
